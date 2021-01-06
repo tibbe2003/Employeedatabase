@@ -1,7 +1,9 @@
 <?php
-  $searchq = $query = $result = $line = $col_value="";
-    //Collect
-    if(isset ($_POST['search'])) {
+//empting variables
+ $searchq = $query = $result = $line = $col_value="";
+
+//collecting
+if(isset ($_POST['search'])) {
       $searchq = $_POST['search'];
     //Connect database
       $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
