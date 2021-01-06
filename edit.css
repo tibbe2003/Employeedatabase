@@ -1,0 +1,199 @@
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+
+.logo {
+  display: block;
+  color: #000;
+  padding: 8px 16px;
+  text-decoration: none;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  width: 100px;
+  background-color: #242a4f;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+.navitem a {
+  display: block;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  border: none;
+}
+
+.navitem img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50px;
+  height: 50px;
+  border: none;
+}
+
+.navitem p {
+  margin-top: 0px;
+  text-align: center;
+}
+
+.navitems a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.navitem a:hover:not(.active) {
+  font-weight: bolder;
+}
+
+.search {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.searchform {
+  margin-top: 10px;
+  text-align: center;
+}
+
+input:not(.editform)[type=text] {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('img/vergrootglas.png');
+  background-position: 5px 5px; 
+  background-repeat: no-repeat;
+  padding: 7px 50px 7px 40px;
+}
+
+hr {
+  width: 100%;
+  color: black;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: 200ms ease-in-out;
+  border: 1px solid black;
+  border-radius: 3px;
+  z-index: 10;
+  background-color: white;
+  width: 500px;
+  max-width: 80%;
+  overflow: auto;
+}
+
+.modal.active {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header {
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid black;
+}
+
+.modal-header .title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-header .close-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-body {
+  padding: 10px 15px;
+  overflow: auto;
+}
+
+#overlay {
+  position: fixed;
+  opacity: 0;
+  transition: 200ms ease-in-out;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, .5);
+  pointer-events: none;
+}
+
+#overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.queryresultaten {
+  text-decoration: none;
+  color: black;
+}
+
+.addbutton {
+  float: right;
+  background-color: #45b5ff;
+  border: none;
+  color: white;
+  padding: 10px 22px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.datainput {
+	  width: 100%;
+  padding: 5px 10px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+}
+
+tr, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+.tabel {
+  overflow-x:auto;
+}
