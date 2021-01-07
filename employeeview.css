@@ -250,7 +250,7 @@ a {
 }
 
 .collapsible {
-  background-color: #777;
+  background-color: #45b5ff;
   color: white;
   cursor: pointer;
   padding: 18px;
@@ -262,7 +262,7 @@ a {
 }
 
 .active, .collapsible:hover {
-  background-color: #555;
+  background-color: #0076c4;
 }
 
 .content {
@@ -272,4 +272,11 @@ a {
   transition: max-height 0.2s ease-out;
   background-color: #f1f1f1;
   width: 90%;
+}
+
+.image {
+  height: 17px;
+  width: 17px;
+  margin-top: auto;
+  margin-bottom: auto;
 }

@@ -28,9 +28,8 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 	<ul class="nav">
   		<li class="navitem"><a href="employees.php"><img src="img/logo.png" alt="Logo"></a></li>
   		<li class="navitem"><a class="active" href="employees.php"><img src="img/employee.png"></a></li>
-  		<li class="navitem"><a href="business.php"><img src="img/office.png" alt="Office"></a></li>
-  		<li class="navitem"><a href="customer.php"><img src="img/customer.png" alt="Customers"></a></li>
-  		<li class="navitem"><a href="unit.php"><img src="img/unit.png" alt="Unit"></a></li>
+  		<li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
+  		<li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
   		<li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
 	</ul>
 		<!--mainpage-->

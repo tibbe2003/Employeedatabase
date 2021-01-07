@@ -70,8 +70,8 @@ if(isset($_POST['update']))
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Employees</title>
-  	<link href="employeesview.css" rel="stylesheet">
+  <title><?php echo $data['firstname'] . $data['lastname']; ?></title>
+  	<link href="employeeview.css" rel="stylesheet">
   	<script defer src="datainsert.js"></script>
   	<meta charset="UTF-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -86,10 +86,9 @@ if(isset($_POST['update']))
 	<!--navbar-->
 	<ul class="nav">
   		<li class="navitem"><a href="employees.php"><img src="img/logo.png" alt="Logo"></a></li>
-  		<li class="navitem"><a class="active" href="employees.php"><img src="img/employee.png"></a></li>
-  		<li class="navitem"><a href="business.php"><img src="img/office.png" alt="Office"></a></li>
-  		<li class="navitem"><a href="customer.php"><img src="img/customer.png" alt="Customers"></a></li>
-  		<li class="navitem"><a href="unit.php"><img src="img/unit.png" alt="Unit"></a></li>
+  		<li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li>
+  		<li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
+  		<li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
   		<li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
 	</ul>
 
@@ -144,11 +143,11 @@ if(isset($_POST['update']))
         <!-- assigned to customers-->
       </div>
       <!--collapsinble buttons for attachments and notes-->
-      <button class="collapsible">Attachments</button>
+      <button class="collapsible"><img src="img/attachment.png" class="image"> Attachments</button>
       <div class="content">
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
       </div>
-      <button class="collapsible">Notes</button>
+      <button class="collapsible"><img src="img/note.png" class="image"></a> Notes</button>
       <div class="content">
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
       </div>
