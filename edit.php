@@ -10,6 +10,7 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 //get the employeeid to make changes
 if(isset($_GET['employeeid'])) { $id = $_GET['employeeid'];}
 
+if(isset($_POST['cancel'])) {header("location:employees.php");}
 // when click on Update button
 if(isset($_POST['update']))
 {
@@ -70,7 +71,7 @@ if(isset($_POST['update']))
 <html lang="en">
 <head>
   <title>Employees</title>
-  	<link href="edit.css" rel="stylesheet">
+  	<link href="employeesview.css" rel="stylesheet">
   	<script defer src="datainsert.js"></script>
   	<meta charset="UTF-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -101,24 +102,75 @@ if(isset($_POST['update']))
     	<hr>
   		</div>
 
-		<h3>Update Data</h3>
+		<h2>Employee: <?php echo $data['firstname'] . $data['lastname']; ?></h2>
+    <div class="employeedata">
 	<!--showing data in form to edit-->
 		<form action="edit.php" method="POST">
-    		<input type="hidden" name="employeeid" class="editform" value="<?php echo $data['employeeid']?>">
+        <h3>General information</h3>
+        <label>Employee id</label>
+    		<input type="text" name="employeeid" class="editform" value="<?php echo $data['employeeid']?>" disabled>
+        <label>First name</label>
      		<input type="text" name="firstname" class="editform" value="<?php echo $data['firstname'] ?>" placeholder="Enter Firstname" Required>
+        <label>Last name</label>
     		<input type="text" name="lastname" class="editform" value="<?php echo $data['lastname'] ?>" placeholder="Enter Lastname" Required>
+        <label>Email</label>
     		<input type="text" name="email" class="editform" value="<?php echo $data['email'] ?>" placeholder="Enter email" Required>
+        <h3>Work information</h3>
+        <label>Jobtitle</label>
+        <input type="text" name="jobtitle" class="editform" value="<?php echo $data['jobtitles']?>" placeholer="jobtitle" disabled>
+        <label>Business unit</label>
+        <input type="text" name="businessunit" class="editform" value="<?php echo $data['businessunit']?>" placeholer="businessunit" disabled>
+        <label>Salary</label>
+        <input type="text" name="salary" class="editform" value="<?php echo $data['salary'] ?>" placeholder="Enter phone" Required>
+        <label>Join date</label>
+        <input type="date" name="joindate" class="editform" value="<?php echo $data['joindate'] ?>" placeholder="joindate" Required disabled>
+        <h3>Personal information</h3>
+        <label>Phone</label>
     		<input type="text" name="phone" class="editform" value="<?php echo $data['phone'] ?>" placeholder="Enter phone" Required>
+        <label>Adress</label>
+        <input type="text" name="adress" class="editform" value="<?php echo $data['adress'] ?>" placeholder="Enter Lastname" Required>
+        <label>City</label>
+        <input type="text" name="city" class="editform" value="<?php echo $data['city'] ?>" placeholder="Enter email" Required>
+        <label>Birthdate</label>
     		<input type="date" name="birthday" class="editform" value="<?php echo $data['birthdate'] ?>" placeholder="Enter Firstname" disabled>
-    		<input type="text" name="adress" class="editform" value="<?php echo $data['adress'] ?>" placeholder="Enter Lastname" Required>
-    		<input type="text" name="city" class="editform" value="<?php echo $data['city'] ?>" placeholder="Enter email" Required>
-    		<input type="text" name="jobtitle" class="editform" value="<?php echo $data['jobtitles']?>" placeholer="jobtitle" disabled>
-    		<input type="text" name="businessunit" class="editform" value="<?php echo $data['businessunit']?>" placeholer="businessunit" disabled>
-    		<input type="date" name="joindate" class="editform" value="<?php echo $data['joindate'] ?>" placeholder="joindate" Required disabled>
-    		<input type="text" name="salary" class="editform" value="<?php echo $data['salary'] ?>" placeholder="Enter phone" Required>
-  			<input type="submit" name="update" value="update">
-  			<button><a href="employees.php">cancel</a></button>
+  			<input type="submit" name="update" value="Save" class="button">
+  			<input type="submit" name="cancel" value="Cancel" class="button">
 		</form>
-  	</div>
+    </div>
+
+    <div class="leftdiv">
+      <h3>Assigned to:</h3>
+      <div class="assignedto">
+        <!-- assigned to customers-->
+      </div>
+      <!--collapsinble buttons for attachments and notes-->
+      <button class="collapsible">Attachments</button>
+      <div class="content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      </div>
+      <button class="collapsible">Notes</button>
+      <div class="content">
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+      </div>
+    </div>
+
+  </div>
 </body>
 </html>
+
+<script>
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.maxHeight){
+      content.style.maxHeight = null;
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+    } 
+  });
+}
+</script>
