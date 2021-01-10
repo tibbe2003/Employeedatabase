@@ -1,4 +1,4 @@
-<?php
+ <?php
 //clean input data function
 require_once('datavalidation.php');
 //connecting to database
@@ -8,21 +8,19 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
  $fristname = $lastname = $email = $phone = $id = $birthdate = $joindate ="";
 
 //get the employeeid to make changes
-if(isset($_GET['employeeid'])) { $id = $_GET['employeeid'];}
+if(isset($_GET['employeeid'])) {$id = $_GET['employeeid'];}
 
 if(isset($_POST['cancel'])) {header("location:employees.php");}
 // when click on Update button
 if(isset($_POST['update']))
-{
+{  
 	//getting input out of the form
     $firstname = clean_input($_POST['firstname']);
     $lastname = clean_input($_POST['lastname']);
     $email = clean_input($_POST['email']);
     $phone = clean_input($_POST['phone']);
-    $birthdate = clean_input($_POST['birthdate']);
     $adress = clean_input($_POST['adress']);
     $city = clean_input($_POST['city']);
-    $joindate = clean_input($_POST['joindate']);
     $salary = clean_input($_POST['salary']);
     $employeeid = clean_input($_POST['employeeid']);
 
@@ -41,12 +39,11 @@ if(isset($_POST['update']))
     {
         echo "Could not edit this employee";
     } 
-
 } 
 //if not clicked on update
 	else {
 	//getting data from database
-    	$qry = pg_query_params($dbconn,'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City, Jobtitles.Jobtitles, BusinessUnits.BusinessUnit, Employees.Joindate, Employees.Salary 
+    	$qry = pg_query_params($dbconn,'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City, Jobtitles.Jobtitles, BusinessUnits.BusinessUnit, Employees.joindate, Employees.Salary 
         	FROM employees 
         	JOIN Jobtitles ON Employees.JobID=Jobtitles.JobID
         	JOIN BusinessUnits ON Employees.UnitID=BusinessUnits.UnitID
@@ -105,9 +102,10 @@ if(isset($_POST['update']))
     <div class="employeedata">
 	<!--showing data in form to edit-->
 		<form action="edit.php" method="POST">
+      <input type="text" name="employeeid" value="<?php echo $data['employeeid'] ?>" hidden>
         <h3>General information</h3>
         <label>Employee id</label>
-    		<input type="text" name="employeeid" class="editform" value="<?php echo $data['employeeid']?>" disabled>
+    		<input type="text" name="employeeidshow" class="editform" value="<?php echo $data['employeeid']?>" disabled>
         <label>First name</label>
      		<input type="text" name="firstname" class="editform" value="<?php echo $data['firstname'] ?>" placeholder="Enter Firstname" Required>
         <label>Last name</label>
@@ -131,7 +129,7 @@ if(isset($_POST['update']))
         <label>City</label>
         <input type="text" name="city" class="editform" value="<?php echo $data['city'] ?>" placeholder="Enter email" Required>
         <label>Birthdate</label>
-    		<input type="date" name="birthday" class="editform" value="<?php echo $data['birthdate'] ?>" placeholder="Enter Firstname" disabled>
+    		<input type="date" name="birthdate" class="editform" value="<?php echo $data['birthdate'] ?>" placeholder="Enter Firstname" disabled>
   			<input type="submit" name="update" value="Save" class="button">
   			<input type="submit" name="cancel" value="Cancel" class="button">
 		</form>
