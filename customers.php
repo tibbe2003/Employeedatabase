@@ -48,15 +48,63 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
      				<button data-close-button class="close-button">&times;</button>
     		</div>
     	<div class="modal-body">
-      		<h1>Add Customer</h1>
+      		<form action="customerinsert.php">
+            <label>Business name</label> 
+            <input type="text" name="businessname" placeholder="businessname" class="datainput" required> 
+            <label>Contact name</label>
+            <input type="text" name="contactname" placeholder="contact name" class="datainput">
+            <label>Contact email</label>
+            <input type="text" name="email" placeholder="contact email" class="datainput" required>
+            <label>Business website</label>
+            <input type="text" name="website" placeholder="Business website" class="datainput">
+            <label>Business adress</label>
+            <input type="text" name="adress" placeholder="Business adress" class="datainput">
+            <input type="submit" name="submit">
+          </form>
     	</div>
   	</div>
   	<div id="overlay"></div>
 
-  	<!--showing all the employees-->
+  	<!--showing all the customers-->
   	<div style="overflow-x:auto;width: 100%;">
     <h1>All customers</h1>
-    	<!--hier komt php-->
+    	<?php
+        //connect to database
+          $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
+            or die('Could not connect: ' . pg_last_error());
+          //constructing query to select all employee data
+          $query = 'SELECT customerid,customername,contactname,email,website,adress 
+            FROM customers 
+            ORDER BY customerid';
+          //preparing to show the result
+          $result = pg_query($query) or die('Query failed: ' . pg_last_error()); //alles ophalen uit database
+          //showing result in table
+            echo "<table>\n";
+            echo
+            "<tr>
+            <td>ID</td>
+            <td>Business name</td>
+            <td>Contact name</td>
+            <td>Email</td>
+            <td>Website</td>
+            <td>Adress</td>
+            </tr>";
+            echo "\t<tr>\t";
+              while ($line = pg_fetch_array($result,NULL, PGSQL_ASSOC)) {
+                echo "\t<tr>\n";
+                foreach ($line as $col_value) {
+                    echo "\t\t<td><a href='customerview.php?customerid=".$line['customerid']."' class=\"queryresultaten\">$col_value</a></td>\n";
+                }
+              echo "<td><a href='deletecustomer.php?customerid=".$line['customerid']."'>Delete</a></td>";
+              echo "\t</tr>\n";
+
+              }
+            echo "</table>\n";
+
+      pg_free_result($result);
+
+      pg_close($dbconn);
+    ?>
   </div>
 
 </div>
