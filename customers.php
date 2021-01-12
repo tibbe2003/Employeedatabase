@@ -48,7 +48,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
      				<button data-close-button class="close-button">&times;</button>
     		</div>
     	<div class="modal-body">
-      		<form action="customerinsert.php">
+      		<form method="POST" action="customerinsert.php">
             <label>Business name</label> 
             <input type="text" name="businessname" placeholder="businessname" class="datainput" required> 
             <label>Contact name</label>

@@ -14,10 +14,6 @@ function test_input($data) {
 ?>
 
 <?php
-
-    if (isset($_POST['submit'])) {
-        echo "succes";}
-    die;
     //connect to database
     $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
         or die('Could not connect: ' . pg_last_error());
