@@ -8,7 +8,7 @@
 	$id = $_GET['unitid'];
 
 	//query to delete record
-	$del = pg_query_params($dbconn, 'DELETE FROM businessunits WHERE unitid = $1',array($id)) or die('There are employees assigned to this unit. You cant delete it');
+	$del = pg_query_params($dbconn, 'DELETE FROM businessunits WHERE unitid = $1',array($id));
 	//if query is true
 	if($del)
 		{
@@ -18,7 +18,7 @@
 		}
 	else {
 		pg_close($dbconn);
-		header("Location: referer?delete=failed");
+		header("Location: unit.php");
 		exit;
 	}
 ?>

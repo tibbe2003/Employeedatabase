@@ -1,7 +1,6 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  scroll-behavior: smooth;
 }
 
 *, *::after, *::before {
@@ -73,7 +72,7 @@ body {
   text-align: center;
 }
 
-input:not(.settings)[type=text] {
+input:not(.datainput)[type=text] {
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #e3e3e3;
@@ -176,7 +175,7 @@ hr {
 }
 
 .datainput {
-    width: 100%;
+	  width: 100%;
   padding: 5px 10px;
   margin: 8px 0;
   box-sizing: border-box;
@@ -193,63 +192,66 @@ tr, td {
   padding: 8px;
 }
 
-tr:nth-child(even){background-color: #f2f2f2}
+tr:nth-child(even){background-color: #dedede;}
 
 .tabel {
   overflow-x:auto;
 }
 
-.collapsible {
+.units, .titles {
+  height: 500px;
+  width: 40%;
+  background-color: #f0f0f0;
   display: inline-block;
-  background-color: #f2f2f2;
-  color: black;
-  cursor: pointer;
-  padding: 10px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
+  margin-top: 7%;
+  overflow-y:auto;
+
 }
 
-.active, .collapsible:hover {
-  background-color: #0076c4;
+.titles {
+  float: right;
+  margin-right: 50px;
 }
 
-.content {
-  padding: 0 18px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  background-color: 
-  width: 90%;
+.units {
+  margin-left: 50px;
 }
 
-.image {
-  height: 17px;
-  width: 17px;
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-.innernav a{
-  display: inline-block;
-  text-decoration: none;
-  color: black;
-  padding: 10px;
-  background-color: #f1f1f1;
-  text-align: center;
-}
-.innernav h1{
-  display: inline-block;
-}
-.innernav div{
-  background-color: green;
-  height: 200px;
-}
-
-@media only screen and (max-width: 800px) {
-  .innernav a{
+@media only screen and (max-width: 1000px) {
+  .titles {
+    margin-right: 0;
     display: block;
+    width: 100%;
+    float: left;
   }
+  .units {
+    margin-left: 0;
+    display: block;
+    width: 100%
+  }
+}
+
+.unitname {
+  font-weight: bolder;
+}
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
 }

@@ -20,6 +20,8 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
 <body>
@@ -32,7 +34,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
   		<li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
 	</ul>
 		<!--mainpage-->
-		<div style="margin-left:100px;padding:1px 16px;height:100%;">
+<div style="margin-left:100px;padding:1px 16px;height:100%;">
 			<!--search employee-->
 			<div class="searchform">
      		 <form method="post" action="searchresult.php" class="search">
@@ -117,51 +119,80 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
   	<div style="overflow-x:auto;width: 100%;">
     <h1>My employees</h1>
     	<?php
-    		//connect to database
-      		$dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
-        		or die('Could not connect: ' . pg_last_error());
-        	//constructing query to select all employee data
-      		$query = 'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City, Jobtitles.Jobtitles, BusinessUnits.BusinessUnit, Employees.Joindate, Employees.Salary 
-         		FROM employees 
-         		JOIN Jobtitles ON Employees.JobID=Jobtitles.JobID
-         		JOIN BusinessUnits ON Employees.UnitID=BusinessUnits.UnitID 
-         		ORDER BY employeeid';
-         	//preparing to show the result
-      		$result = pg_query($query) or die('Query failed: ' . pg_last_error()); //alles ophalen uit database
-      		//showing result in table
-        		echo "<table>\n";
-        		echo
-        		"<tr>
-        		<td>ID</td>
-        		<td>First Name</td>
-        		<td>Last Name</td>
-        		<td>Email</td>
-        		<td>Phone</td>
-        		<td>Birthdate</td>
-        		<td>Adress</td>
-        		<td>City</td>
-        		<td>Jobtitle</td>
-        		<td>BusinessUnit</td>
-        		<td>joindate</td>
-        		<td>Salary</td>
-        		</tr>";
-        		echo "\t<tr>\t";
-        			while ($line = pg_fetch_array($result,NULL, PGSQL_ASSOC)) {
-        				echo "\t<tr>\n";
-        				foreach ($line as $col_value) {
-          					echo "\t\t<td><a href='edit.php?employeeid=".$line['employeeid']."' class=\"queryresultaten\">$col_value</a></td>\n";
-        				}
-        			echo "<td><a href='delete.php?employeeid=".$line['employeeid']."'>Delete</a></td>";
-        			echo "\t</tr>\n";
+        //connect to database
+          $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
+            or die('Could not connect: ' . pg_last_error());
+          //constructing query to select all employee data
+          $query = 'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City, Jobtitles.Jobtitles, BusinessUnits.BusinessUnit, Employees.Joindate, Employees.Salary 
+            FROM employees 
+            JOIN Jobtitles ON Employees.JobID=Jobtitles.JobID
+            JOIN BusinessUnits ON Employees.UnitID=BusinessUnits.UnitID 
+            ORDER BY employeeid';
+          //preparing to show the result
+          $result = pg_query($query) or die('Query failed: ' . pg_last_error()); //alles ophalen uit database
+          //showing result in table
+            echo "<table>\n";
+            echo
+            "<tr>
+            <td>ID</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Email</td>
+            <td>Phone</td>
+            <td>Birthdate</td>
+            <td>Adress</td>
+            <td>City</td>
+            <td>Jobtitle</td>
+            <td>BusinessUnit</td>
+            <td>joindate</td>
+            <td>Salary</td>
+            </tr>";
+            echo "\t<tr>\t";
+              while ($line = pg_fetch_array($result,NULL, PGSQL_ASSOC)) {
+                echo "\t<tr>\n";
+                foreach ($line as $col_value) {
+                    echo "\t\t<td><a href='edit.php?employeeid=".$line['employeeid']."' class=\"queryresultaten\">$col_value</a></td>\n";
+                }
+              echo "<td><a href='delete.php?employeeid=".$line['employeeid']."'>Delete</a></td>";
+              echo "\t</tr>\n";
 
-        			}
-        		echo "</table>\n";
+              }
+            echo "</table>\n";
 
       pg_free_result($result);
 
       pg_close($dbconn);
-    ?>
-  </div>
+    ?>  </div>
 </div>
 </body>
 </html>
+
+<script>  
+ $(document).ready(function(){  
+      $(document).on('click', '.column_sort', function(){  
+           var column_name = $(this).attr("id");  
+           var order = $(this).data("order");  
+           var arrow = '';  
+           //glyphicon glyphicon-arrow-up  
+           //glyphicon glyphicon-arrow-down  
+           if(order == 'desc')  
+           {  
+                arrow = '&nbsp;<span class="glyphicon glyphicon-arrow-down"></span>';  
+           }  
+           else  
+           {  
+                arrow = '&nbsp;<span class="glyphicon glyphicon-arrow-up"></span>';  
+           }  
+           $.ajax({  
+                url:"sort.php",  
+                method:"POST",  
+                data:{column_name:column_name, order:order},  
+                success:function(data)  
+                {  
+                     $('#employee_table').html(data);  
+                     $('#'+column_name+'').append(arrow);  
+                }  
+           })  
+      });  
+ });  
+ </script>

@@ -7,7 +7,7 @@ require_once ('datavalidation.php');
 <html lang="en">
 <head>
   <title>Employees</title>
-  <link href="settings.css" rel="stylesheet">
+  <link href="settings2.css" rel="stylesheet">
   <script defer src="datainsert.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,20 +35,7 @@ require_once ('datavalidation.php');
           </form>
         <hr>
         </div>
-    <!--datainput popup-->
-    <!--<button data-modal-target="#modal" class="addbutton">Add customer</button>
-      <div class="modal" id="modal">
-        <div class="modal-header">
-            <div class="title">Add new customer</div>
-            <button data-close-button class="close-button">&times;</button>
-        </div>
-      <div class="modal-body">
-          <h1>Add Customer</h1>
-      </div>
-    </div>
-    <div id="overlay"></div>-->
 
-    <!--showing all the employees-->
     <div class="innernav"style="overflow-x:auto;width: 100%;">
       <h1 style="margin-right: 10%;">My settings</h1>
       <a href="#companyinfo">Company information</a>
@@ -58,14 +45,46 @@ require_once ('datavalidation.php');
       <hr>
       <div>
         <h3 id="companyinfo">Company information</h3>
+        <form>
+        	<label for="companyname">Company name</label>
+        	<input type="text" name="companyname" class="settings">
+        	<label for="street">Street</label>
+        	<input type="text" name="street" class="settings">
+        	<label for="postcode">Postal code</label>
+        	<input type="text" name="postcode" class="settings">
+        	<label for="city">City</label>
+        	<input type="text" name="city" class="settings">
+        	<label for="ceo">CEO name</label>
+        	<input type="text" name="ceo" class="settings">
+        </form>
       </div>
         <hr>
       <div>
         <h3 id="accountsettings">Account settings</h3>
+        <form>
+        	<label for="firstname">First name</label>
+        	<input type="text" name="firstname" class="settings">
+        	<label for="lastname">Last name</label>
+        	<input type="text" name="lastname" class="settings">
+        	<label for="email">Email</label>
+        	<input type="text" name="email" class="settings">
+        	<label for="phone">Phone</label>
+        	<input type="text" name="phone" class="settings">
+        	<label for="street">Street</label>
+        	<input type="text" name="street" class="settings">
+        	<label for="city">City</label>
+        	<input type="text" name="city" class="settings">
+        </form>
       </div>
       <hr>
       <div>
         <h3 id="security">Security</h3>
+        <label for="oldpassword">Old password</label>
+        <input type="password" name="oldpassword" class="settings">
+        <label for="newpassword">New password</label>
+        <input type="password" name="newpassword" class="settings">
+        <label for="repeatnewpassword">Repeat new password</label>
+        <input type="password" name="repeatnewpassword" class="settings">
       </div>
     </div>
 

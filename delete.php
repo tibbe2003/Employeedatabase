@@ -1,6 +1,4 @@
 <?php
-	//refering back to previus page
-	$referer = $_SERVER['HTTP_REFERER'];
 	//connecting to database
 	$dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
  		or die('Could not connect: ' . pg_last_error());
@@ -12,7 +10,7 @@
 	if($del)
 		{
     		pg_close($dbconn); // Close connection
-    		header("Location: $referer?delete=1"); // redirects to all records page
+    		header("Location: employees.php?delete=1"); // redirects to all records page
     		exit;	
 		}
 ?>

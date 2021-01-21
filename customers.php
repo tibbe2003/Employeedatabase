@@ -50,7 +50,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
     	<div class="modal-body">
       		<form method="POST" action="customerinsert.php">
             <label>Business name</label> 
-            <input type="text" name="businessname" placeholder="businessname" class="datainput" required> 
+            <input type="text" name="customername" placeholder="businessname" class="datainput" required> 
             <label>Contact name</label>
             <input type="text" name="contactname" placeholder="contact name" class="datainput">
             <label>Contact email</label>

@@ -129,8 +129,11 @@
           or die('Could not connect: ' . pg_last_error());
 
           //query to select employee data
-          $query = 'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City
-              FROM Employees WHERE LOWER(FirstName) LIKE LOWER($1) OR LOWER(LastName) LIKE LOWER($1)
+          $query = 'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City, Jobtitles.Jobtitles, BusinessUnits.BusinessUnit, Employees.Joindate, Employees.Salary 
+              FROM Employees
+              JOIN Jobtitles ON Employees.JobID=Jobtitles.JobID
+              JOIN BusinessUnits ON Employees.UnitID=BusinessUnits.UnitID 
+              WHERE LOWER(FirstName) LIKE LOWER($1) OR LOWER(LastName) LIKE LOWER($1)
               ORDER BY employeeid';
 
           //result
@@ -144,9 +147,17 @@
             echo
               "<tr>
               <td>ID</td>
-              <td>First Name</td>
-              <td>Last Name</td>
-              <td>Email</td>
+            <td>First Name</td>
+            <td>Last Name</td>
+            <td>Email</td>
+            <td>Phone</td>
+            <td>Birthdate</td>
+            <td>Adress</td>
+            <td>City</td>
+            <td>Jobtitle</td>
+            <td>BusinessUnit</td>
+            <td>joindate</td>
+            <td>Salary</td>
               </tr>";
             echo "\t<tr>\t";
               while ($line = pg_fetch_array($result,NULL, PGSQL_ASSOC)) {

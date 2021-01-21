@@ -1,7 +1,6 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  scroll-behavior: smooth;
 }
 
 *, *::after, *::before {
@@ -73,7 +72,7 @@ body {
   text-align: center;
 }
 
-input:not(.settings)[type=text] {
+input:not(.editform)[type=text] {
   width: 100%;
   box-sizing: border-box;
   border: 1px solid #e3e3e3;
@@ -176,7 +175,7 @@ hr {
 }
 
 .datainput {
-    width: 100%;
+	  width: 100%;
   padding: 5px 10px;
   margin: 8px 0;
   box-sizing: border-box;
@@ -198,14 +197,64 @@ tr:nth-child(even){background-color: #f2f2f2}
 .tabel {
   overflow-x:auto;
 }
+.employeedata {
+  width: 80%;
+  float: right;
+}
+
+.leftdiv {
+  width: 20%;
+  float: left;
+}
+
+@media only screen and (max-width: 800px) {
+  .employeedata {
+    width: 100%;
+  }
+  .leftdiv {
+    width: 100%;
+  }
+}
+.editform {
+  width: 90%;
+  align-content: center;
+  display: block;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid black;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.button {
+  background-color: #45b5ff;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+.assignedto {
+  height: 500px;
+  width: 90%;
+  background-color: green;
+}
 
 .collapsible {
-  display: inline-block;
-  background-color: #f2f2f2;
-  color: black;
+  background-color: #45b5ff;
+  color: white;
   cursor: pointer;
-  padding: 10px;
-  width: 100%;
+  padding: 18px;
+  width: 90%;
   border: none;
   text-align: left;
   outline: none;
@@ -221,7 +270,7 @@ tr:nth-child(even){background-color: #f2f2f2}
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
-  background-color: 
+  background-color: #f1f1f1;
   width: 90%;
 }
 
@@ -232,24 +281,78 @@ tr:nth-child(even){background-color: #f2f2f2}
   margin-bottom: auto;
 }
 
-.innernav a{
-  display: inline-block;
-  text-decoration: none;
-  color: black;
-  padding: 10px;
-  background-color: #f1f1f1;
-  text-align: center;
-}
-.innernav h1{
-  display: inline-block;
-}
-.innernav div{
-  background-color: green;
-  height: 200px;
+.edit {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 400px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-@media only screen and (max-width: 800px) {
-  .innernav a{
-    display: block;
-  }
+/* Modal Content */
+.edit-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
 }
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.bewerk {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 400px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.bewerk-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+
+/* The Close Button */
+.sluit {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+.sluit:hover,
+.sluit:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+

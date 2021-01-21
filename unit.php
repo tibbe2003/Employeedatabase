@@ -12,7 +12,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 <html lang="en">
 <head>
   <title>Employees</title>
-  <link href="units.css" rel="stylesheet">
+  <link href="unit.css" rel="stylesheet">
   <script defer src="datainsert.js"></script>
   <script defer src="jobtitleinsert.js"></script>
   <meta charset="UTF-8">
@@ -24,41 +24,42 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 </head>
 
 <body>
-  <!--navbar-->
-  <ul class="nav">
-      <li class="navitem"><a href="employees.php"><img src="img/logo.png" alt="Logo"></a></li>
-      <li class="navitem"><a class="active" href="employees.php"><img src="img/employee.png"></a></li>
-      <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
-      <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
-      <li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
-  </ul>
-    <!--mainpage-->
-    <div style="margin-left:100px;padding:1px 16px;height:100%;">
-      <!--search employee-->
-      <div class="searchform">
-         <form method="post" action="searchresult.php" class="search">
-              <input type="text" name="search" placeholder="Search employee" required class="S">
-          </form>
-        <hr>
-        </div>
-    <!--datainput popup 1-->
-    <button data-modal-target="#modal" class="addbutton">Add businessunit</button>
-      <div class="modal" id="modal">
-        <div class="modal-header">
-            <div class="title">Add new businessunit</div>
-            <button data-close-button class="close">&times;</button>
-        </div>
-      <div class="modal-body">
-          <form action="unitinsert.php" method="post">
-          <input type="text" name="unit" placeholder="Add Businessunit" required class="datainput">
-          <input type="submit" name="submit">
-          </form>
-      </div>
-    </div>
-    <div id="overlay"></div>
+	<!--navbar-->
+	<ul class="nav">
+  		<li class="navitem"><a href="employees.php"><img src="img/logo.png" alt="Logo"></a></li>
+  		<li class="navitem"><a class="active" href="employees.php"><img src="img/employee.png"></a></li>
+  		<li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
+  		<li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
+  		<li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
+	</ul>
+		<!--mainpage-->
+		<div style="margin-left:100px;padding:1px 16px;height:100%;">
+			<!--search employee-->
+			<div class="searchform">
+     		 <form method="post" action="searchresult.php" class="search">
+          		<input type="text" name="search" placeholder="Search employee" required class="S">
+      		</form>
+    		<hr>
+  			</div>
+  	<!--datainput popup 1-->
+  	<button data-modal-target="#modal" class="addbutton">Add businessunit</button>
+  		<div class="modal" id="modal">
+    		<div class="modal-header">
+      			<div class="title">Add new businessunit</div>
+     				<button data-close-button class="close">&times;</button>
+    		</div>
+    	<div class="modal-body">
+      		<form action="unitinsert.php" method="post">
+        	<input type="text" name="unit" placeholder="Add Businessunit" required class="datainput">
+        	<input type="submit" name="submit">
+      		</form>
+    	</div>
+  	</div>
+  	<div id="overlay"></div>
 
-    <!--showing all the employees-->
-    <div style="overflow-x:auto;width: 100%;">
+  	<!--showing all the employees-->
+  	<div style="overflow-x:auto;width: 100%;">
+
       <div class="units">
         <h2>Businessunits</h2>
         <?php
@@ -89,6 +90,12 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 
       pg_close($dbconn);
         ?>
+
+      <!--error massage-->
+        <div class="alert">
+        <span class="closebtn" onclick="location.href='units.php'">&times;</span> 
+          <strong>Error!</strong> There are employees assigned to this unit.
+      </div>
       </div>
       <div class="titles">
         <h2>Jobtitles</h2>
