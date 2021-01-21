@@ -1,0 +1,2 @@
+INSERT INTO employees (FirstName, LastName, Email, Phone, BirthDate, Adress, City, JobID, UnitID, Joindate, Salary)
+VALUES ('Thijmen','Brand','Thijmen@ik.nu','0640018231','2003-11-22','Dennehoutstraat 21','Helmond','1','1','2020-12-07','$100.000')

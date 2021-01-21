@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Employees, Jobtitles, BusinessUnits, Customers, Deployment CASCADE;
+DROP TABLE IF EXISTS Employees, Jobtitles, BusinessUnits, Customers, Deployment, notes, companyinfo CASCADE;
 
 CREATE TABLE Jobtitles (
 JobID SERIAL,
@@ -64,9 +64,20 @@ Note TEXT,
 	PRIMARY KEY(NoteID)
 );
 
-CREATE TABLE doelen (
-DoelID SERIAL,
-Doelname VARCHAR(255),
-Doel TEXT,
-	PRIMARY KEY(DoelID)
+CREATE TABLE companyinfo (
+companyname VARCHAR(255)
+street VARCHAR(255)
+postalcode VARCHAR(255)
+city VARCHAR(255)
+);
+
+CREATE TABLE users (
+    employeeid INT NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    	PRIMARY KEY (employeeid),
+    	CONSTRAINT employee
+    		FOREIGn KEY(employeeid),
+    		REFERENCES Employees(EmployeeID)
 );
