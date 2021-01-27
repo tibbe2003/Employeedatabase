@@ -12,7 +12,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 <html lang="en">
 <head>
   <title>Employees</title>
-  <link href="home.css" rel="stylesheet">
+  <link href="home.css?<?php echo time(); ?>" rel="stylesheet">
   <script defer src="datainsert.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +27,8 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 <body>
 	<!--navbar-->
 	<ul class="nav">
-  		<li class="navitem"><a href="#employees"><img src="img/logo.png" alt="Logo"></a></li>
+  		<li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
+      <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
   		<li class="navitem"><a class="active" href="#employees"><img src="img/employee.png"></a></li>
   		<li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
   		<li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
@@ -60,7 +61,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
           	<label for="Phone">Phone:</label>
         	<input type="tel" name="Phone" placeholder="Phone" class="datainput">
          	<label for="Birthdate">Date of birth:</label>
-        	<input type="date" name="Birthdate" placeholder="Birthdate" class="datainput">
+        	<input type="date" name="Birthdate" placeholder="yyyy-mm-dd" class="datainput">
           	<label for="Adress">Adress:</label>
         	<input type="text" name="Adress" placeholder="Adress" class="datainput">
           	<label for="City">City:</label>
@@ -106,7 +107,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
             	?>
         	</select>
           	<label for="Joindate">Joindate:</label>
-        	<input type="date" name="Joindate" placeholder="Joindate" class="datainput">
+        	<input type="date" name="Joindate" placeholder="yyyy-mm-dd" class="datainput">
           	<label for="Salary">Salary:</label>
         	<input type="text" name="Salary" placeholder="salary" class="datainput">
         	<input type="submit" name="submit">

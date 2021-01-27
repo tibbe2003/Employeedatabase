@@ -7,7 +7,6 @@ body {
   box-sizing: border-box;
 }
 
-
 .logo {
   display: block;
   color: #000;
@@ -23,7 +22,7 @@ body {
   margin: 0;
   padding: 0;
   width: 100px;
-  background-color: #242a4f;
+  background-color: #007FFB;
   position: fixed;
   height: 100%;
   overflow: auto;
@@ -238,15 +237,40 @@ tr:nth-child(even){background-color: #f2f2f2}
   margin-right: 10px;
 }
 
+.newbutton {
+  background-color: #45b5ff;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-right: 10px;
+}
+
 a {
   text-decoration: none;
   color: white;
 }
 
 .assignedto {
+  position: relative;
   height: 500px;
   width: 90%;
-  background-color: green;
+  background-color: #f0f0f0f0;
+}
+
+.assignedto button {
+  position: absolute;
+  bottom: 20px;
+  left: 10%;
+}
+
+@media screen and (max-width: 800px) {
+  .newbutton {
+    width: 80%;
+  }
 }
 
 .collapsible {
@@ -281,11 +305,11 @@ a {
   margin-bottom: auto;
 }
 
-.edit {
+.modal2 {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 400px; /* Location of the box */
+  padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -296,7 +320,7 @@ a {
 }
 
 /* Modal Content */
-.edit-content {
+.modal-content {
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
@@ -317,4 +341,8 @@ a {
   color: #000;
   text-decoration: none;
   cursor: pointer;
+}
+
+.delete {
+  color: red;
 }

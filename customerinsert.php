@@ -20,7 +20,7 @@ function test_input($data) {
 
     //if submit button is pushed, collect data and clean input
     if (isset($_POST['submit'])) {
-        $businessname = clean_input($_POST['businessname']); 
+        $businessname = clean_input($_POST['customername']); 
         $contactname = clean_input($_POST['contactname']); 
         $email = clean_input($_POST['email']); 
         $website = clean_input($_POST['website']); 

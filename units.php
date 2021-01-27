@@ -12,7 +12,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 <html lang="en">
 <head>
   <title>Employees</title>
-  <link href="units.css" rel="stylesheet">
+  <link href="units.css?<?php echo time(); ?>" rel="stylesheet">
   <script defer src="datainsert.js"></script>
   <script defer src="jobtitleinsert.js"></script>
   <meta charset="UTF-8">
@@ -26,7 +26,8 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 <body>
   <!--navbar-->
   <ul class="nav">
-      <li class="navitem"><a href="employees.php"><img src="img/logo.png" alt="Logo"></a></li>
+      <li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
+      <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
       <li class="navitem"><a class="active" href="employees.php"><img src="img/employee.png"></a></li>
       <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
       <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>

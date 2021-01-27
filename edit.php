@@ -67,7 +67,7 @@ if(isset($_POST['update']))
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title><?php echo $data['firstname'] . $data['lastname']; ?></title>
+  <title><?php echo $data['firstname'] . " ". $data['lastname']; ?></title>
     <link rel="stylesheet" type="text/css" href="employeeview.css?<?php echo time(); ?>" />
     <script defer src="datainsert.js"></script>
     <meta charset="UTF-8">
@@ -82,7 +82,8 @@ if(isset($_POST['update']))
 <body>
   <!--navbar-->
   <ul class="nav">
-      <li class="navitem"><a href="employees.php"><img src="img/logo.png" alt="Logo"></a></li>
+      <li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
+      <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
       <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li>
       <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
       <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
@@ -98,7 +99,7 @@ if(isset($_POST['update']))
       <hr>
       </div>
 
-    <h2>Employee: <?php echo $data['firstname'] . $data['lastname']; ?></h2>
+    <h2>Employee: <?php echo $data['firstname'] . " " . $data['lastname']; ?></h2>
     <div class="employeedata">
   <!--showing data in form to edit-->
     <form action="edit.php" method="POST">
@@ -139,19 +140,69 @@ if(isset($_POST['update']))
       <h3>Assigned to:</h3>
       <div class="assignedto">
         <!-- assigned to customers-->
-      </div>
-      <!--collapsinble buttons for attachments and notes-->
-      <button class="collapsible"><img src="img/attachment.png" class="image"> Attachments</button>
-      <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-      </div>
-      <button class="collapsible"><img src="img/note.png" class="image"></a> Notes</button>
-      <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        <?php 
+          $assigned = pg_query_params($dbconn,'SELECT customers.customerid, customers.customername FROM deployment
+            JOIN customers ON customers.customerID=Deployment.customerID
+            WHERE employeeid = $1',array(intval($id)))
+            or die ('query failed' . pg_last_error());
+
+            echo "<table>\n";
+            echo "\t<tr>\t";
+              while ($line = pg_fetch_array($assigned,NULL, PGSQL_ASSOC)) {
+                echo "\t<tr>\n";
+                foreach ($line as $col_value) {
+                    echo "\t\t<td>$col_value</td>\n";
+                }
+              echo "<td><a href='deletecompany.php?customerid=".$line['customerid']."' class=\"delete\">X</a></td>";
+              echo "\t</tr>\n";
+
+              }
+            echo "</table>\n";
+
+      pg_free_result($assigned);
+
+      pg_close($dbconn);
+    ?>
+      <button id="assignbutton" class="newbutton">Assign employee</button>
       </div>
     </div>
 
   </div>
+
+  <!-- The Modal -->
+<div id="assignemployee" class="modal2">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h1>Assign <?php echo $data['firstname'] . " " . $data['lastname']; ?> to</h1>
+    <form action="assigncompany.php" method="POST">
+      <select name="customerid" class="datainput">
+            <option value="">Select...</option>
+              <?php
+                  // connect to database
+                  $conn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
+                      or die('Could not connect: ' . pg_last_error());
+                  //get jobtitle and jobid form database
+                  $resultaat = pg_query($conn, "SELECT customerid, customername FROM customers");
+                  if (!$resultaat) {
+                    // error message  
+                    echo "An error occurred.\n";
+                      exit;
+                  }
+                  // dispaly result in dropdown
+                  while ($row = pg_fetch_row($resultaat)) {
+                    echo '<option value="'.$row[0].'">'.$row[1].'</option>';
+                  }
+              ?>
+          </select>
+          <input type="hidden" name="employeeid" value="<?php echo $data['employeeid']?>">
+          <input type="submit" name="assign" value="assign" class="button">
+    </form>
+  </div>
+
+</div>
+
 </body>
 </html>
 
@@ -171,34 +222,29 @@ for (i = 0; i < coll.length; i++) {
   });
 }
 
-//modal 1
-var modal = document.getElementById("edit");
+// Get the modal
+var modal = document.getElementById("assignemployee");
 
-var btn = document.getElementById("button");
+// Get the button that opens the modal
+var btn = document.getElementById("assignbutton");
 
+// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
- 
-button.onclick = function() {
-  edit.style.display = "block";
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
 }
 
+// When the user clicks on <span> (x), close the modal
 span.onclick = function() {
-  edit.style.display = "none";
+  modal.style.display = "none";
 }
 
-
-//Modal 2
-var modal = document.getElementById("bewerk");
-
-var btn = document.getElementById("knop");
-
-var span = document.getElementsByClassName("sluit")[0];
- 
-knop.onclick = function() {
-  bewerk.style.display = "block";
-}
-
-span.onclick = function() {
-  bewerk.style.display = "none";
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
 }
 </script>

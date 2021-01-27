@@ -64,7 +64,7 @@ if(isset($_POST['update']))
 <html lang="en">
 <head>
   <title><?php echo $data['customername']; ?></title>
-  	<link href="customerview.css" rel="stylesheet">
+  	<link href="customerview.css?<?php echo time(); ?>" rel="stylesheet">
   	<script defer src="datainsert.js"></script>
   	<meta charset="UTF-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -78,7 +78,8 @@ if(isset($_POST['update']))
 <body>
 	<!--navbar-->
 	<ul class="nav">
-  		<li class="navitem"><a href="employees.php"><img src="img/logo.png" alt="Logo"></a></li>
+  		<li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
+      <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
   		<li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li>
   		<li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
   		<li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
@@ -121,36 +122,29 @@ if(isset($_POST['update']))
       <h3>Assigned employees:</h3>
       <div class="assignedto">
         <?php 
-          $assigned = pg_query_params($dbconn,'SELECT * FROM deployment
-            JOIN FirstName ON Employees.EmployeeID=Deployment.EmployeeID
-            JOIN LastName ON Employees.EmployeeID=Deployment.EmployeeID
+          $assigned = pg_query_params($dbconn,'SELECT employees.employeeid, employees.firstname, employees.lastname FROM deployment
+            JOIN employees ON Employees.EmployeeID=Deployment.EmployeeID
             WHERE customerid = $1',array(intval($id)))
             or die ('query failed' . pg_last_error());
 
-            $assigneddata = pg_fetch_array($assigned);
-
             echo "<table>\n";
-            echo
-            "<tr>
-            employeeid
-            <td>Name</td>
-            </tr>";
             echo "\t<tr>\t";
-              while ($line = pg_fetch_array($assigneddata,NULL, PGSQL_ASSOC)) {
+              while ($line = pg_fetch_array($assigned,NULL, PGSQL_ASSOC)) {
                 echo "\t<tr>\n";
                 foreach ($line as $col_value) {
                     echo "\t\t<td>$col_value</td>\n";
                 }
-              echo "<td><a href='deassign.php?employeeid=".$line['employeeid']."'>Delete</a></td>";
+              echo "<td><a href='deleteassign.php?employeeid=".$line['employeeid']."' class=\"delete\">X</a></td>";
               echo "\t</tr>\n";
 
               }
             echo "</table>\n";
 
-      pg_free_result($assigneddata);
+      pg_free_result($assigned);
 
       pg_close($dbconn);
     ?>
+    <button id="assignbutton" class="newbutton">Assign employee</button>
       </div>
       <!--collapsinble buttons for attachments and notes-->
       <button class="collapsible"><img src="img/attachment.png" class="image"> Contracts</button>
@@ -160,6 +154,40 @@ if(isset($_POST['update']))
     </div>
 
   </div>
+
+<!-- The Modal -->
+<div id="assignemployee" class="modal2">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h1>Assign employee to <?php echo $data['customername'] ?></h1>
+    <form action="assignemployee.php" method="POST">
+      <select name="employee" class="datainput">
+            <option value="">Select...</option>
+              <?php
+                  // connect to database
+                  $conn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
+                      or die('Could not connect: ' . pg_last_error());
+                  //get jobtitle and jobid form database
+                  $resultaat = pg_query($conn, "SELECT employeeid, firstname, lastname FROM employees");
+                  if (!$resultaat) {
+                    // error message  
+                    echo "An error occurred.\n";
+                      exit;
+                  }
+                  // dispaly result in dropdown
+                  while ($row = pg_fetch_row($resultaat)) {
+                    echo '<option value="'.$row[0].'">'.$row[1].''.$row[2].'</option>';
+                  }
+              ?>
+          </select>
+          <input type="hidden" name="customerid" value="<?php echo $data['customerid']?>">
+          <input type="submit" name="assign" value="assign" class="button">
+    </form>
+  </div>
+
+</div>
 </body>
 </html>
 
@@ -177,6 +205,32 @@ for (i = 0; i < coll.length; i++) {
       content.style.maxHeight = content.scrollHeight + "px";
     } 
   });
+}
+
+// Get the modal
+var modal = document.getElementById("assignemployee");
+
+// Get the button that opens the modal
+var btn = document.getElementById("assignbutton");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
 }
 </script>
 

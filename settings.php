@@ -1,13 +1,28 @@
 <?php 
 //clean input data function
 require_once ('datavalidation.php');
+
+//Connecting to bd
+$dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
+ or die('Could not connect: ' . pg_last_error());
+
+ //empting variables
+ $qry = $data = "";
+
+ //preparing query
+ $qry = pg_query("SELECT * FROM companyinfo");
+ $data = pg_fetch_assoc($qry);
+
+ //preparing ceo query
+ $ceo = pg_query("SELECT firstname, lastname FROM employees WHERE jobid=1");
+ $ceoresult = pg_fetch_assoc($ceo);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <title>Employees</title>
-  <link href='settings2.css?version=3' rel='stylesheet'></link>
+  <link href='settings2.css?<?php echo time(); ?>' rel='stylesheet'></link>
   <script defer src="datainsert.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +35,8 @@ require_once ('datavalidation.php');
 <body>
   <!--navbar-->
   <ul class="nav">
-      <li class="navitem"><a href="employees.php"><img src="img/logo.png" alt="Logo"></a></li>
+      <li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
+      <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
       <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li>
       <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
       <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
@@ -47,15 +63,15 @@ require_once ('datavalidation.php');
         <h3 id="companyinfo">Company information</h3>
         <form method="POST" class="form">
         	<label for="companyname">Company name</label>
-        	<input type="text" name="companyname" class="settings compname" placeholder="Company name"><br>
+        	<input type="text" name="companyname" value="<?php echo $data['companyname'] ?>" class="settings compname" placeholder="Company name" disabled><br>
         	<label for="street">Street</label>
-        	<input type="text" name="street" class="settings" placeholder="Street">
+        	<input type="text" name="street" value="<?php echo $data['street'] ?>"class="settings" placeholder="Street" disabled>
         	<label for="postcode">Postal code</label>
-        	<input type="text" name="postcode" class="settings" placeholder="Postal code"><br>
+        	<input type="text" name="postcode" value="<?php echo $data['postalcode'] ?>" class="settings" placeholder="Postal code" disabled><br>
         	<label for="city">City</label>
-        	<input type="text" name="city" class="settings" placeholder="City">
+        	<input type="text" name="city" value="<?php echo $data['city'] ?>" class="settings" placeholder="City" disabled>
         	<label for="ceo">CEO name</label>
-        	<input type="text" name="ceo" class="settings" placeholder="CEO name">
+        	<input type="text" name="ceo" value="<?php echo $ceoresult['firstname']." ".$ceoresult['lastname'] ?>" class="settings" placeholder="CEO name" disabled>
         </form>
       </div>
         <hr>
