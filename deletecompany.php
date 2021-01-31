@@ -1,5 +1,5 @@
 <?php 
-
+	session_start();
 	$dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
  		or die('Could not connect: ' . pg_last_error());
 	//get id from clicked record
@@ -11,7 +11,7 @@
 	if($del)
 		{
     		pg_close($dbconn); // Close connection
-    		echo "Aan deze functionaliteit word nog gewerkt. De assignemt is wel verwijderd. ;)";
+    		    		header("location:edit.php?employeeid=".$_SESSION["employeeid"]);
 			//header("location:https://thijmenbrand.nl/customerview.php?customerid=$customerid"); // redirects to all records page
     		exit;	
 		}

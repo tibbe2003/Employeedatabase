@@ -72,12 +72,10 @@ city VARCHAR(255)
 );
 
 CREATE TABLE users (
-    employeeid INT NOT NULL,
-    email VARCHAR(50) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    	PRIMARY KEY (employeeid),
-    	CONSTRAINT employee
-    		FOREIGN KEY(employeeid)
-    		REFERENCES Employees(EmployeeID)
+    usersid INT NOT NULL,
+    usersname VARCHAR(128) NOT NULL,
+    usersemail VARCHAR(50) NOT NULL UNIQUE,
+    usersuid VARCHAR(128) NOT NULL,
+    userspwd VARCHAR(255) NOT NULL,
+    	PRIMARY KEY (usersid)
 );

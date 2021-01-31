@@ -1,4 +1,10 @@
-<?php 
+<?php
+ session_start();
+if(empty($_SESSION['useremail'])) { 
+   header("Location: login.php");  
+   die("Redirecting to login.php"); 
+} 
+$username = $_SESSION['useremail'];
   require_once ('datavalidation.php'); //data schonen
   $job = $unit =""; $nameErr = $emailErr ="";
   if (isset($_GET['nameErr'])){ $nameErr = clean_input($_GET['nameErr']); }//input valideren
@@ -10,7 +16,7 @@
 <head>
   <title>Employees</title>
   <script defer src="datainsert.js"></script>
-  <link href="searchresult.css?<?php echo time(); ?>" rel="stylesheet">
+  <link href="css/searchresult.css?<?php echo time(); ?>" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta charset="UTF-8">

@@ -232,6 +232,11 @@ tr:nth-child(even){background-color: #f2f2f2}
   margin-bottom: auto;
 }
 
+.logout {
+float: right;
+margin-top: 25px; 
+}
+
 .innernav a{
   display: inline-block;
   text-decoration: none;
@@ -247,7 +252,6 @@ tr:nth-child(even){background-color: #f2f2f2}
   background-color: #f0f0f0;
   padding: 2%;
 }
-
 @media only screen and (max-width: 800px) {
   .innernav a{
     display: block;

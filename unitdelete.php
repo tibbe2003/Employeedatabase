@@ -18,7 +18,7 @@
 		}
 	else {
 		pg_close($dbconn);
-		header("Location: unit.php");
+		header("Location: uniterror.php");
 		exit;
 	}
 ?>

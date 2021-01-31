@@ -1,4 +1,5 @@
-<?php 
+<?php
+
 	//clean input data function
 	require_once('datavalidation.php');
 	//empting variables

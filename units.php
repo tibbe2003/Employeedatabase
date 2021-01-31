@@ -1,4 +1,10 @@
-<?php 
+<?php
+ session_start();
+if(empty($_SESSION['useremail'])) { 
+   header("Location: login.php");  
+   die("Redirecting to login.php"); 
+} 
+$username = $_SESSION['useremail'];
 //clean input data function
 require_once ('datavalidation.php');
 //empting variables
@@ -12,7 +18,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 <html lang="en">
 <head>
   <title>Employees</title>
-  <link href="units.css?<?php echo time(); ?>" rel="stylesheet">
+  <link href="css/units.css?<?php echo time(); ?>" rel="stylesheet">
   <script defer src="datainsert.js"></script>
   <script defer src="jobtitleinsert.js"></script>
   <meta charset="UTF-8">

@@ -1,4 +1,10 @@
-<?php 
+<?php
+ session_start();
+if(empty($_SESSION['useremail'])) { 
+   header("Location: login.php");  
+   die("Redirecting to login.php"); 
+} 
+$username = $_SESSION['useremail'];
 //clean input data function
 require_once ('datavalidation.php');
 
@@ -22,7 +28,7 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 <html lang="en">
 <head>
   <title>Employees</title>
-  <link href='settings2.css?<?php echo time(); ?>' rel='stylesheet'></link>
+  <link href='css/settings.css?<?php echo time(); ?>' rel='stylesheet'></link>
   <script defer src="datainsert.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,6 +63,11 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
       <a href="#companyinfo">Company information</a>
       <a href="#accountsettings">Account settings</a>
       <a href="#security">Security</a>
+      <?php 
+      if (isset($_SESSION["useremail"])) {
+      	echo "<a href='includes/logout.inc.php' class=\"logout\" style=\"color: red;\">Logout</a>";
+      }
+      ?>
 
       <hr>
       <div>

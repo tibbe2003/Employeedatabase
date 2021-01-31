@@ -12,7 +12,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 <html lang="en">
 <head>
   <title>Employees</title>
-  <link href="unit.css?<?php echo time(); ?>" rel="stylesheet">
+  <link href="css/uniterror.css?<?php echo time(); ?>" rel="stylesheet">
   <script defer src="datainsert.js"></script>
   <script defer src="jobtitleinsert.js"></script>
   <meta charset="UTF-8">

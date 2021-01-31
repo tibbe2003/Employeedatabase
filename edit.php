@@ -1,4 +1,10 @@
 <?php
+ session_start();
+if(empty($_SESSION['useremail'])) { 
+   header("Location: login.php");  
+   die("Redirecting to login.php"); 
+} 
+$username = $_SESSION['useremail'];
 //clean input data function
 require_once('datavalidation.php');
 //connecting to database
@@ -9,6 +15,8 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 
 //get the employeeid to make changes
 if(isset($_GET['employeeid'])) {$id = $_GET['employeeid'];}
+
+$_SESSION["employeeid"] = $id;
 
 if(isset($_POST['cancel'])) {header("location:employees.php");}
 // when click on Update button
@@ -68,7 +76,7 @@ if(isset($_POST['update']))
 <html lang="en">
 <head>
   <title><?php echo $data['firstname'] . " ". $data['lastname']; ?></title>
-    <link rel="stylesheet" type="text/css" href="employeeview.css?<?php echo time(); ?>" />
+    <link rel="stylesheet" type="text/css" href="css/employeeview.css?<?php echo time(); ?>" />
     <script defer src="datainsert.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

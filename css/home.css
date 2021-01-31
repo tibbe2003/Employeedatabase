@@ -130,3 +130,25 @@ hr {
     float: left;
   }
 }
+
+.employeeamount {
+  font-size: 60px;
+  padding: 20px;
+  width: 50%;
+  border-radius: 10px;
+  background-color: #FEAD68;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+    margin-top: 15%;
+    color: white;
+}
+
+.numberofemployees {
+  text-align: center;
+}
+
+.stock  {
+  height: 99%;
+  width: 100%;
+}

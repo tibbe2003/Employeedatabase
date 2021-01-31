@@ -1,4 +1,11 @@
  <?php
+ session_start();
+if(empty($_SESSION['useremail'])) {
+   header("Location: login.php");
+   die("Redirecting to login.php");
+}
+$username = $_SESSION['useremail'];
+
 //clean input data function
 require_once('datavalidation.php');
 //connecting to database
@@ -10,10 +17,12 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 //get the customer id to make changes
 if(isset($_GET['customerid'])) {$id = $_GET['customerid'];}
 
+$_SESSION["customerid"] = $id;
+
 if(isset($_POST['cancel'])) {header("location:customers.php");}
 // when click on Update button
 if(isset($_POST['update']))
-{  
+{
 	//getting input out of the form
     $customername = clean_input($_POST['customername']);
     $contactname = clean_input($_POST['contactname']);
@@ -24,7 +33,7 @@ if(isset($_POST['update']))
 
     //preparing an update query for given input
     $edit = pg_query_params($dbconn,"UPDATE customers SET customername=$1, contactname=$2, email=$3, website=$4, adress=$5 where customerid = $6",array($customername,$contactname,$email,$website,$adress,intval($customerid))) or die ('Query failed: ' . pg_last_error()); //nieuwe gegevens in database zetten
-	
+
 	//if edit is true
     if($edit)
     {
@@ -36,17 +45,17 @@ if(isset($_POST['update']))
     else
     {
         echo "Could not edit this customer";
-    } 
-} 
+    }
+}
 //if not clicked on update
 	else {
 	//getting data from database
-    	$qry = pg_query_params($dbconn,'SELECT customerid, customername, contactname, email, website, adress 
-        	FROM customers 
+    	$qry = pg_query_params($dbconn,'SELECT customerid, customername, contactname, email, website, adress
+        	FROM customers
         	WHERE customerid = $1',array(intval($id)))
     			or die ('Query failed: ' . pg_last_error());
     			//getting ready to show data
-    			$data = pg_fetch_array($qry); // fetch data  
+    			$data = pg_fetch_array($qry); // fetch data
 	}
 ?>
 
@@ -64,7 +73,7 @@ if(isset($_POST['update']))
 <html lang="en">
 <head>
   <title><?php echo $data['customername']; ?></title>
-  	<link href="customerview.css?<?php echo time(); ?>" rel="stylesheet">
+  	<link href="css/customerview.css?<?php echo time(); ?>" rel="stylesheet">
   	<script defer src="datainsert.js"></script>
   	<meta charset="UTF-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -121,7 +130,7 @@ if(isset($_POST['update']))
     <div class="leftdiv">
       <h3>Assigned employees:</h3>
       <div class="assignedto">
-        <?php 
+        <?php
           $assigned = pg_query_params($dbconn,'SELECT employees.employeeid, employees.firstname, employees.lastname FROM deployment
             JOIN employees ON Employees.EmployeeID=Deployment.EmployeeID
             WHERE customerid = $1',array(intval($id)))
@@ -140,16 +149,11 @@ if(isset($_POST['update']))
               }
             echo "</table>\n";
 
-      pg_free_result($assigned);
+          pg_free_result($assigned);
 
-      pg_close($dbconn);
-    ?>
-    <button id="assignbutton" class="newbutton">Assign employee</button>
-      </div>
-      <!--collapsinble buttons for attachments and notes-->
-      <button class="collapsible"><img src="img/attachment.png" class="image"> Contracts</button>
-      <div class="content">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+          pg_close($dbconn);
+        ?>
+        <button id="assignbutton" class="newbutton">Assign employee</button>
       </div>
     </div>
 
@@ -172,7 +176,7 @@ if(isset($_POST['update']))
                   //get jobtitle and jobid form database
                   $resultaat = pg_query($conn, "SELECT employeeid, firstname, lastname FROM employees");
                   if (!$resultaat) {
-                    // error message  
+                    // error message
                     echo "An error occurred.\n";
                       exit;
                   }
@@ -186,7 +190,7 @@ if(isset($_POST['update']))
           <input type="submit" name="assign" value="assign" class="button">
     </form>
   </div>
-
+  
 </div>
 </body>
 </html>
@@ -203,7 +207,7 @@ for (i = 0; i < coll.length; i++) {
       content.style.maxHeight = null;
     } else {
       content.style.maxHeight = content.scrollHeight + "px";
-    } 
+    }
   });
 }
 
@@ -216,7 +220,7 @@ var btn = document.getElementById("assignbutton");
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks the button, open the modal 
+// When the user clicks the button, open the modal
 btn.onclick = function() {
   modal.style.display = "block";
 }
@@ -233,5 +237,3 @@ window.onclick = function(event) {
   }
 }
 </script>
-
-
