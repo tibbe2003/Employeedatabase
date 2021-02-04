@@ -125,10 +125,10 @@ $result = pg_query($dbconn, $query);
                   WHERE DATE_PART('day', birthdate) = date_part('day', CURRENT_DATE)
                   AND DATE_PART('month', birthdate) = date_part('month', CURRENT_DATE)");
       ?>
-      <h1><?php if (empty($dataquery)) {
-        echo "There are no birthdays today! :/";
+      <h2><?php if (empty($dataquery)) {
+        echo "<h2 class=\"geenjarigen\">There are no birthdays today! :/</h2>";
       } else {
-          echo "<table>\n";
+          echo "<table class=\"jarigentable\">\n";
           echo "\t<tr>\t";
             while ($line = pg_fetch_array($dataquery,NULL, PGSQL_ASSOC)) {
               echo "\t<tr>\n";
@@ -143,7 +143,7 @@ $result = pg_query($dbconn, $query);
           pg_free_result($dataquery);
 
           pg_close($dbconn);}
-       ?></h1>
+       ?></h2>
     </div>
 
     </div>
