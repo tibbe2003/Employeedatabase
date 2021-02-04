@@ -81,7 +81,7 @@ input:not(.settings)[type=text] {
   font-size: 16px;
   background-color: white;
   background-image: url('img/vergrootglas.png');
-  background-position: 5px 5px; 
+  background-position: 5px 5px;
   background-repeat: no-repeat;
   padding: 7px 50px 7px 40px;
 }
@@ -91,52 +91,6 @@ hr {
   color: black;
   text-align: center;
   margin-top: 10px;
-}
-
-.modal {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(0);
-  transition: 200ms ease-in-out;
-  border: 1px solid black;
-  border-radius: 3px;
-  z-index: 10;
-  background-color: white;
-  width: 500px;
-  max-width: 80%;
-  overflow: auto;
-}
-
-.modal.active {
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.modal-header {
-  padding: 10px 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid black;
-}
-
-.modal-header .title {
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-.modal-header .close-button {
-  cursor: pointer;
-  border: none;
-  outline: none;
-  background: none;
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-.modal-body {
-  padding: 10px 15px;
-  overflow: auto;
 }
 
 #overlay {
@@ -221,7 +175,7 @@ tr:nth-child(even){background-color: #f2f2f2}
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
-  background-color: 
+  background-color:
   width: 90%;
 }
 
@@ -234,7 +188,7 @@ tr:nth-child(even){background-color: #f2f2f2}
 
 .logout {
 float: right;
-margin-top: 25px; 
+margin-top: 25px;
 }
 
 .innernav a{
@@ -248,7 +202,7 @@ margin-top: 25px;
 .innernav h1{
   display: inline-block;
 }
-.innernav div{
+.section{
   background-color: #f0f0f0;
   padding: 2%;
 }
@@ -290,4 +244,32 @@ margin-top: 25px;
 
 label {
   margin-right: 1%;
+}
+
+.alert {
+  padding: 20px;
+  background-color: red;
+  color: white;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.succes {
+  padding: 20px;
+  background-color: green;
+  color: white;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn {
+  background-color: #577CFB;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
 }

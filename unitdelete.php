@@ -14,11 +14,11 @@
 		{
     		pg_close($dbconn); // Close connection
     		header("Location: $referer?delete=1"); // redirects to all records page
-    		exit;	
+    		exit;
 		}
 	else {
 		pg_close($dbconn);
-		header("Location: uniterror.php");
+		header("Location: units.php?error=error");
 		exit;
 	}
 ?>

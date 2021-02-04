@@ -80,7 +80,7 @@ input:not(.datainput)[type=text] {
   font-size: 16px;
   background-color: white;
   background-image: url('img/vergrootglas.png');
-  background-position: 5px 5px; 
+  background-position: 5px 5px;
   background-repeat: no-repeat;
   padding: 7px 50px 7px 40px;
 }
@@ -233,4 +233,10 @@ tr:nth-child(even){background-color: #dedede;}
 
 .unitname {
   font-weight: bolder;
+}
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;
+  color: white;
 }

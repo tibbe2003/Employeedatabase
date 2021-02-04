@@ -1,9 +1,9 @@
 <?php
 session_start();
-if(empty($_SESSION['useremail'])) { 
-   header("Location: login.php");  
-   die("Redirecting to login.php"); 
-} 
+if(empty($_SESSION['useremail'])) {
+   header("Location: login.php");
+   die("Redirecting to login.php");
+}
 $username = $_SESSION['useremail'];
 
 //clean input data function
@@ -24,6 +24,12 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
  $ceo = pg_query("SELECT firstname, lastname FROM employees WHERE jobid=1");
  $ceoresult = pg_fetch_assoc($ceo);
 ?>
+<?php
+$query = "SELECT businessunits.businessunit, COUNT(*) as number FROM employees
+          JOIN BusinessUnits ON Employees.UnitID=BusinessUnits.UnitID
+          GROUP BY businessunit";
+$result = pg_query($dbconn, $query);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -37,6 +43,33 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+           <script type="text/javascript">
+           google.charts.load('current', {'packages':['corechart', 'bar']});
+           google.charts.setOnLoadCallback(drawChart);
+           function drawChart()
+           {
+                var data = google.visualization.arrayToDataTable([
+                          ['unitid', 'Number'],
+                          <?php
+                          while($row = pg_fetch_array($result))
+                          {
+                               echo "['".$row["businessunit"]."', ".$row["number"]."],";
+                          }
+                          ?>
+                     ]);
+                var options = {
+                  backgroundColor: '#f0f0f0'
+                };
+                var chart = new google.visualization.ColumnChart(document.getElementById('chart'));
+                chart.draw(data, options);
+           }
+           $(window).resize(function(){
+             drawChart();
+           });
+           </script>
+
+  </script>
 </head>
 
 <body>
@@ -58,14 +91,14 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
           </form>
         <hr>
         </div>
-    
+
     <h1>Hello <?php echo "User...."; ?></h1>
-    <!--number of employees--> 
+    <!--number of employees-->
     <div class="insight left">
-      <h1 class="numberofemployees">Number of employees</h1>
+      <h1 class="title">Number of employees</h1>
       <?php
         $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
-            or die('Could not connect: ' . pg_last_error()); 
+            or die('Could not connect: ' . pg_last_error());
 
         $amount = pg_query($dbconn,'SELECT COUNT(employeeid) AS numberofemployees FROM employees');
         $resultamount = pg_fetch_array($amount);
@@ -80,12 +113,37 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 
     <!--number of customers-->
     <div class="insight left">
-      <h1>test</h1>
+      <h1 class="title">Employees per Businessunit</h1>
+      <div id="chart" style="width:100%;height:78%;"></div>
     </div>
 
     <!--Number of jobs done-->
     <div class="insight right">
-      <h1>test</h1>
+      <h1 class="title">Birthdays of today</h1>
+      <?php
+      $dataquery = pg_query($dbconn,"SELECT firstname, lastname FROM employees
+                  WHERE DATE_PART('day', birthdate) = date_part('day', CURRENT_DATE)
+                  AND DATE_PART('month', birthdate) = date_part('month', CURRENT_DATE)");
+      ?>
+      <h1><?php if (empty($dataquery)) {
+        echo "There are no birthdays today! :/";
+      } else {
+          echo "<table>\n";
+          echo "\t<tr>\t";
+            while ($line = pg_fetch_array($dataquery,NULL, PGSQL_ASSOC)) {
+              echo "\t<tr>\n";
+              foreach ($line as $col_value) {
+                echo "\t\t<td class=\"jarigen\">$col_value</td>\n";
+              }
+              echo "\t</tr>\n";
+
+            }
+          echo "</table>\n";
+
+          pg_free_result($dataquery);
+
+          pg_close($dbconn);}
+       ?></h1>
     </div>
 
     </div>

@@ -1,9 +1,9 @@
 <?php
  session_start();
-if(empty($_SESSION['useremail'])) { 
-   header("Location: login.php");  
-   die("Redirecting to login.php"); 
-} 
+if(empty($_SESSION['useremail'])) {
+   header("Location: login.php");
+   die("Redirecting to login.php");
+}
 $username = $_SESSION['useremail'];
 //clean input data function
 require_once ('datavalidation.php');
@@ -63,14 +63,14 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
       <a href="#companyinfo">Company information</a>
       <a href="#accountsettings">Account settings</a>
       <a href="#security">Security</a>
-      <?php 
+      <?php
       if (isset($_SESSION["useremail"])) {
       	echo "<a href='includes/logout.inc.php' class=\"logout\" style=\"color: red;\">Logout</a>";
       }
       ?>
 
       <hr>
-      <div>
+      <div class="section">
         <h3 id="companyinfo">Company information</h3>
         <form method="POST" class="form">
         	<label for="companyname">Company name</label>
@@ -86,7 +86,7 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
         </form>
       </div>
         <hr>
-      <div>
+      <div class="section">
         <h3 id="accountsettings">Account settings</h3>
         <form method="POST" class="form">
         	<label for="firstname">First name</label>
@@ -104,15 +104,31 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
         </form>
       </div>
       <hr>
-      <div>
+      <div class="section">
+        <?php
+          if (isset($_GET["error"])) {
+            if ($_GET["error"] == "error") {
+              echo "<div class=\"alert\">
+                        <strong>Error!</strong> Password reset failed!.
+                    </div>";
+            }
+            else if ($_GET["error"] == "none") {
+              echo "<div class=\"succes\">
+                        <strong>Succes</strong> Your password has been reset!.
+                    </div>";
+            }
+          }
+        ?>
         <h3 id="security">Security</h3>
-        <form method="POST" class="form">
+
+        <form action="includes/pwdreset.inc.php" method="POST" class="form">
         <label for="oldpassword">Old password</label>
-        <input type="password" name="oldpassword" class="settings" placeholder="Old password"><br>
+        <input type="password" name="oldpwd" class="settings" placeholder="Old password"><br>
         <label for="newpassword">New password</label>
-        <input type="password" name="newpassword" class="settings" placeholder="New password"><br>
+        <input type="password" name="pwd" class="settings" placeholder="New password"><br>
         <label for="repeatnewpassword">Repeat new password</label>
-        <input type="password" name="repeatnewpassword" class="settings" placeholder="Repeat new password"><br>
+        <input type="password" name="pwdrepeat" class="settings" placeholder="Repeat new password"><br>
+        <input type="submit" name="submit" value="submit" class="btn">
     	</form>
       </div>
     </div>

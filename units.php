@@ -1,9 +1,9 @@
 <?php
  session_start();
-if(empty($_SESSION['useremail'])) { 
-   header("Location: login.php");  
-   die("Redirecting to login.php"); 
-} 
+if(empty($_SESSION['useremail'])) {
+   header("Location: login.php");
+   die("Redirecting to login.php");
+}
 $username = $_SESSION['useremail'];
 //clean input data function
 require_once ('datavalidation.php');
@@ -96,7 +96,17 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 
       pg_close($dbconn);
         ?>
+        <?php
+        if (isset($_GET["error"])) {
+    			if ($_GET["error"] == "error") {
+    				echo "<div class=\"alert\">
+              				<strong>Error!</strong>There are employees assigned to this unit!
+          				</div>";
+          }
+        }
+        ?>
       </div>
+
       <div class="titles">
         <h2>Jobtitles</h2>
         <?php

@@ -81,7 +81,7 @@ input:not(.settings)[type=text] {
   font-size: 16px;
   background-color: white;
   background-image: url('img/vergrootglas.png');
-  background-position: 5px 5px; 
+  background-position: 5px 5px;
   background-repeat: no-repeat;
   padding: 7px 50px 7px 40px;
 }
@@ -144,7 +144,7 @@ hr {
     color: white;
 }
 
-.numberofemployees {
+.title {
   text-align: center;
 }
 

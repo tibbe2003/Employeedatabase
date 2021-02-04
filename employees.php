@@ -1,9 +1,9 @@
 <?php
  session_start();
-if(empty($_SESSION['useremail'])) { 
-   header("Location: login.php");  
-   die("Redirecting to login.php"); 
-} 
+if(empty($_SESSION['useremail'])) {
+   header("Location: login.php");
+   die("Redirecting to login.php");
+}
 $username = $_SESSION['useremail'];
 //clean input data function
 require_once ('datavalidation.php');
@@ -26,7 +26,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 
@@ -82,7 +82,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
               		//get jobtitle and jobid form database
               		$resultaat = pg_query($conn, "SELECT * FROM Jobtitles");
               		if (!$resultaat) {
-                		// error message  
+                		// error message
                 		echo "An error occurred.\n";
                 			exit;
               		}
@@ -102,7 +102,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
               		// get unit and unitid from database
               		$resultaat2 = pg_query($conn, "SELECT * FROM BusinessUnits");
               		if (!$resultaat2) {
-                		// error message  
+                		// error message
                 		echo "An error occurred.\n";
                 			exit;
               		}
@@ -130,10 +130,10 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
           $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
             or die('Could not connect: ' . pg_last_error());
           //constructing query to select all employee data
-          $query = 'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City, Jobtitles.Jobtitles, BusinessUnits.BusinessUnit, Employees.Joindate, Employees.Salary 
-            FROM employees 
+          $query = 'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City, Jobtitles.Jobtitles, BusinessUnits.BusinessUnit, Employees.Joindate, Employees.Salary
+            FROM employees
             JOIN Jobtitles ON Employees.JobID=Jobtitles.JobID
-            JOIN BusinessUnits ON Employees.UnitID=BusinessUnits.UnitID 
+            JOIN BusinessUnits ON Employees.UnitID=BusinessUnits.UnitID
             ORDER BY employeeid';
           //preparing to show the result
           $result = pg_query($query) or die('Query failed: ' . pg_last_error()); //alles ophalen uit database
@@ -172,34 +172,4 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
     ?>  </div>
 </div>
 </body>
-</html>
-
-<script>  
- $(document).ready(function(){  
-      $(document).on('click', '.column_sort', function(){  
-           var column_name = $(this).attr("id");  
-           var order = $(this).data("order");  
-           var arrow = '';  
-           //glyphicon glyphicon-arrow-up  
-           //glyphicon glyphicon-arrow-down  
-           if(order == 'desc')  
-           {  
-                arrow = '&nbsp;<span class="glyphicon glyphicon-arrow-down"></span>';  
-           }  
-           else  
-           {  
-                arrow = '&nbsp;<span class="glyphicon glyphicon-arrow-up"></span>';  
-           }  
-           $.ajax({  
-                url:"sort.php",  
-                method:"POST",  
-                data:{column_name:column_name, order:order},  
-                success:function(data)  
-                {  
-                     $('#employee_table').html(data);  
-                     $('#'+column_name+'').append(arrow);  
-                }  
-           })  
-      });  
- });  
- </script>
+</html>ß
