@@ -77,3 +77,9 @@ input[type=text]:focus, input[type=password]:focus {
   cursor: pointer;
   transition: 0.3s;
 }
+
+@media screen and (max-width: 700px) {
+  .container {
+    width: 80%;
+  }
+}

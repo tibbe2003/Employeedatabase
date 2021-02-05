@@ -31,7 +31,6 @@
 		}
 	?>
 
-	<section>
 		<form action="includes/signup.inc.php" method="POST" class="container">
 			<h1 style="color: #FEAD68;">Signup</h1><br>
 
@@ -49,7 +48,6 @@
 			<button type="submit" name="submit" class="btn">Sign Up</button>
 			<button type="button" name="button" class="btn" onclick="window.location.href='login.php'" style="margin-top: 4%;">Already an acount? login</button>
 		</form>
-	</section>
 
 </body>
 </html>
