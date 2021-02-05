@@ -13,6 +13,12 @@ require_once ('datavalidation.php');
 $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
  or die('Could not connect: ' . pg_last_error());
 
+//gettig userid to receive name from db
+$id = $_SESSION['userid'];
+//getting name from db
+$userdata = pg_query_params($dbconn,"SELECT usersname FROM users WHERE usersid = $1",array(intval($id)));
+$userresult = pg_fetch_array($userdata);
+
  //empting variables
  $qry = $data = "";
 
@@ -92,7 +98,7 @@ $result = pg_query($dbconn, $query);
         <hr>
         </div>
 
-    <h1>Hello <?php echo "User...."; ?></h1>
+    <h1>Hello <?php echo $userresult['usersname']; ?></h1>
     <!--number of employees-->
     <div class="insight left">
       <h1 class="title">Number of employees</h1>
@@ -124,25 +130,13 @@ $result = pg_query($dbconn, $query);
       $dataquery = pg_query($dbconn,"SELECT firstname, lastname FROM employees
                   WHERE DATE_PART('day', birthdate) = date_part('day', CURRENT_DATE)
                   AND DATE_PART('month', birthdate) = date_part('month', CURRENT_DATE)");
+      $dataresult = pg_fetch_array($dataquery);
       ?>
-      <h2><?php if (empty($dataquery)) {
-        echo "<h2 class=\"geenjarigen\">There are no birthdays today! :/</h2>";
+      <h2 class="jarigen"><?php if (empty($dataresult)) {
+        echo "There is nothing to celebrate today! :/";
       } else {
-          echo "<table class=\"jarigentable\">\n";
-          echo "\t<tr>\t";
-            while ($line = pg_fetch_array($dataquery,NULL, PGSQL_ASSOC)) {
-              echo "\t<tr>\n";
-              foreach ($line as $col_value) {
-                echo "\t\t<td class=\"jarigen\">$col_value</td>\n";
-              }
-              echo "\t</tr>\n";
-
-            }
-          echo "</table>\n";
-
-          pg_free_result($dataquery);
-
-          pg_close($dbconn);}
+          echo $dataresult['firstname']." ".$dataresult['lastname'];
+        }
        ?></h2>
     </div>
 

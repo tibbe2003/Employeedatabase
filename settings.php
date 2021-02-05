@@ -6,7 +6,7 @@ if(empty($_SESSION['useremail'])) {
 }
 $username = $_SESSION['useremail'];
 //clean input data function
-require_once ('datavalidation.php');
+require_once('datavalidation.php');
 
 //Connecting to bd
 $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
@@ -14,6 +14,35 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 
  //empting variables
  $qry = $data = "";
+
+//getting userid form logged in user
+ if (isset($_SESSION["userid"])) {$id = $_SESSION["userid"];}
+
+ if (isset($_POST['save'])) {
+   $name = clean_input($_POST['name']);
+   $email = clean_input($_POST['email']);
+   $phone = clean_input($_POST['phone']);
+   $street = clean_input($_POST['street']);
+   $city = clean_input($_POST['city']);
+
+   //nieuwe gegevens in db zetten
+   $edit = pg_query_params($dbconn, "UPDATE users SET usersname=$1, usersemail=$2, phone=$3, street=$4, city=$5 WHERE usersid = $6",array($name,$email,$phone,$street,$city,intval($id)));
+
+   if ($edit) {
+     pg_close($dbconn);
+     header("location:settings.php?succes=1");
+     exit;
+   }
+   else {
+     pg_close($dbconn);
+     header("location:settings.php?succes=0");
+     exit;
+   }
+ } //else for if the button is not clicked
+ else {
+   $userdata = pg_query_params($dbconn,"SELECT usersname, usersemail, phone, street, city FROM users WHERE usersid = $1",array(intval($id)));
+   $userresult = pg_fetch_array($userdata);
+ }
 
  //preparing query
  $qry = pg_query("SELECT * FROM companyinfo");
@@ -88,19 +117,18 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
         <hr>
       <div class="section">
         <h3 id="accountsettings">Account settings</h3>
-        <form method="POST" class="form">
-        	<label for="firstname">First name</label>
-        	<input type="text" name="firstname" class="settings" placeholder="First name">
-        	<label for="lastname">Last name</label>
-        	<input type="text" name="lastname" class="settings" placeholder="Last name"><br>
+        <form method="POST" class="form" action="settings.php">
+        	<label for="lastname">Name</label>
+        	<input type="text" name="name" class="settings" placeholder="Name" value="<?php echo $userresult['usersname'] ?>"><br>
         	<label for="email">Email</label>
-        	<input type="text" name="email" class="settings" placeholder="Email">
+        	<input type="text" name="email" class="settings" placeholder="Email" value="<?php echo $userresult['usersemail'] ?>">
         	<label for="phone">Phone</label>
-        	<input type="text" name="phone" class="settings" placeholder="Phone"><br>
+        	<input type="text" name="phone" class="settings" placeholder="Phone" value="<?php echo $userresult['phone'] ?>"><br>
         	<label for="street">Street</label>
-        	<input type="text" name="street" class="settings" placeholder="Street">
+        	<input type="text" name="street" class="settings" placeholder="Street" value="<?php echo $userresult['street'] ?>">
         	<label for="city">City</label>
-        	<input type="text" name="city" class="settings" placeholder="City">
+        	<input type="text" name="city" class="settings" placeholder="City" value="<?php echo $userresult['city'] ?>">
+          <input type="submit" name="save" value="Save" class="btn">
         </form>
       </div>
       <hr>

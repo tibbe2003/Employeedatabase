@@ -242,6 +242,12 @@ margin-top: 25px;
   box-sizing: border-box;
 }
 
+@media screen and (max-width: 600px) {
+  .settings:not(.compname)[type=text] {
+    width: 100%;
+  }
+}
+
 label {
   margin-right: 1%;
 }
@@ -270,6 +276,12 @@ label {
   padding: 16px 20px;
   border: none;
   cursor: pointer;
-  width: 100%;
+  width: 20%;
   opacity: 0.9;
+}
+
+@media screen and (max-width: 600px) {
+  .settings {
+    width: 100%;
+  }
 }
