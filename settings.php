@@ -5,6 +5,7 @@ if(empty($_SESSION['useremail'])) {
    die("Redirecting to login.php");
 }
 $username = $_SESSION['useremail'];
+$role = $_SESSION["role"];
 //clean input data function
 require_once('datavalidation.php');
 
@@ -16,17 +17,16 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
  $qry = $data = "";
 
 //getting userid form logged in user
- if (isset($_SESSION["userid"])) {$id = $_SESSION["userid"];}
+ if (isset($_SESSION['userid'])){$id = $_SESSION['userid'];}
 
  if (isset($_POST['save'])) {
-   $name = clean_input($_POST['name']);
    $email = clean_input($_POST['email']);
    $phone = clean_input($_POST['phone']);
-   $street = clean_input($_POST['street']);
+   $adress = clean_input($_POST['adress']);
    $city = clean_input($_POST['city']);
 
    //nieuwe gegevens in db zetten
-   $edit = pg_query_params($dbconn, "UPDATE users SET usersname=$1, usersemail=$2, phone=$3, street=$4, city=$5 WHERE usersid = $6",array($name,$email,$phone,$street,$city,intval($id)));
+   $edit = pg_query_params($dbconn, "UPDATE employees SET email=$1, phone=$2, adress=$3, city=$4 WHERE employeeid = $5",array($email,$phone,$adress,$city,intval($id)));
 
    if ($edit) {
      pg_close($dbconn);
@@ -40,7 +40,7 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
    }
  } //else for if the button is not clicked
  else {
-   $userdata = pg_query_params($dbconn,"SELECT usersname, usersemail, phone, street, city FROM users WHERE usersid = $1",array(intval($id)));
+   $userdata = pg_query_params($dbconn,"SELECT firstname, lastname, email, phone, adress, city FROM employees WHERE employeeid = $1",array(intval($id)));
    $userresult = pg_fetch_array($userdata);
  }
 
@@ -99,6 +99,27 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
       ?>
 
       <hr>
+      <!--als de role admin is kan je gegevens bewerken-->
+      <?php if($role == "admin") { ?>
+      <div class="section">
+        <h3 id="companyinfo">Company information</h3>
+        <form method="POST" class="form" action="includes/editcompanyinfo.inc.php">
+        	<label for="companyname">Company name</label>
+        	<input type="text" name="companyname" value="<?php echo $data['companyname'] ?>" class="settings compname" placeholder="Company name"><br>
+        	<label for="street">Street</label>
+        	<input type="text" name="street" value="<?php echo $data['street'] ?>"class="settings" placeholder="Street">
+        	<label for="postcode">Postal code</label>
+        	<input type="text" name="postcode" value="<?php echo $data['postalcode'] ?>" class="settings" placeholder="Postal code"><br>
+        	<label for="city">City</label>
+        	<input type="text" name="city" value="<?php echo $data['city'] ?>" class="settings" placeholder="City">
+        	<label for="ceo">CEO name</label>
+        	<input type="text" name="ceo" value="<?php echo $ceoresult['firstname']." ".$ceoresult['lastname'] ?>" class="settings" placeholder="CEO name" disabled>
+          <input type="submit" name="submit" value="Save">
+        </form>
+      </div><?php } ?>
+      
+      <!--als de role iets anders is dan admin-->
+      <?php if($role == "manager" || $role == "employee") { ?>
       <div class="section">
         <h3 id="companyinfo">Company information</h3>
         <form method="POST" class="form">
@@ -113,19 +134,19 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
         	<label for="ceo">CEO name</label>
         	<input type="text" name="ceo" value="<?php echo $ceoresult['firstname']." ".$ceoresult['lastname'] ?>" class="settings" placeholder="CEO name" disabled>
         </form>
-      </div>
+      </div><?php } ?>
         <hr>
       <div class="section">
         <h3 id="accountsettings">Account settings</h3>
         <form method="POST" class="form" action="settings.php">
-        	<label for="lastname">Name</label>
-        	<input type="text" name="name" class="settings" placeholder="Name" value="<?php echo $userresult['usersname'] ?>"><br>
+        	<label for="lastname">full name</label>
+        	<input type="text" name="name" class="settings" placeholder="full name" value="<?php echo $userresult['firstname']. " " . $userresult['lastname'] ?>"><br>
         	<label for="email">Email</label>
-        	<input type="text" name="email" class="settings" placeholder="Email" value="<?php echo $userresult['usersemail'] ?>">
+        	<input type="text" name="email" class="settings" placeholder="Email" value="<?php echo $userresult['email'] ?>">
         	<label for="phone">Phone</label>
         	<input type="text" name="phone" class="settings" placeholder="Phone" value="<?php echo $userresult['phone'] ?>"><br>
-        	<label for="street">Street</label>
-        	<input type="text" name="street" class="settings" placeholder="Street" value="<?php echo $userresult['street'] ?>">
+        	<label for="adress">Adress</label>
+        	<input type="text" name="adress" class="settings" placeholder="Adress" value="<?php echo $userresult['adress'] ?>">
         	<label for="city">City</label>
         	<input type="text" name="city" class="settings" placeholder="City" value="<?php echo $userresult['city'] ?>">
           <input type="submit" name="save" value="Save" class="btn">

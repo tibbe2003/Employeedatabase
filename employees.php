@@ -122,6 +122,20 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
   	</div>
   	<div id="overlay"></div>
 
+
+	<!--bericht dat account is gemaakt-->
+	<?php
+		if (isset($_GET["error"])) {
+			if ($_GET["error"] == "none") {
+				echo "<div class=\"alert\">
+				<span class=\"closebtn\" onclick=\"this.parentElement.style.display='none';\">&times;</span> 
+				<strong>Succes!</strong> User account is succesfully created.
+			  </div>";
+			}
+		}
+	?>
+
+
   	<!--showing all the employees-->
   	<div style="overflow-x:auto;width: 100%;">
     <h1>My employees</h1>
@@ -172,4 +186,4 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
     ?>  </div>
 </div>
 </body>
-</html>ß
+</html>

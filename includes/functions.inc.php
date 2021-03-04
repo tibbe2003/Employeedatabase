@@ -2,9 +2,9 @@
 
 include_once("dbh.inc.php");
 
-function emptyinputsignup($name,$email,$pwd,$pwdrepeat) {
+function emptyinputsignup($email,$pwd,$pwdrepeat) {
 	$result;
-	if (empty($name) || empty($email) || empty($pwd) || empty($pwdrepeat)) {
+	if (empty($email) || empty($pwd) || empty($pwdrepeat)) {
 		$result = true;
 	}
 	else {
@@ -47,15 +47,15 @@ function emailexists($conn, $email) {
 		return $result;
 	}
 
-	pg_close($qry);
+	pg_close($conn);
 }
 
-function createuser($conn,$name,$email,$pwd) {
+function createuser($conn,$id,$email,$pwd,$role) {
 	$hashedpwd = password_hash($pwd, PASSWORD_DEFAULT);
 
-	$qry = pg_query_params($conn, "INSERT INTO users (usersname, usersemail, userspwd) VALUES ($1, $2, $3)",array($name,$email,$hashedpwd));
-	pg_close($qry);
-	header("location:/login.php");
+	$qry = pg_query_params($conn, "INSERT INTO users (usersid, usersemail, userspwd, accesslevel) VALUES ($1, $2, $3, $4)",array(intval($id),$email,$hashedpwd,$role));
+	pg_close($conn);
+	header("location:/employees.php?error=none");
 	exit();
 
 }
@@ -75,7 +75,7 @@ function loginuser($conn,$email,$pwd) {
 	$emailexists = emailexists($conn, $email);
 
 	if ($emailexists === false) {
-		header("location:/login.php?error=wronglogin");
+		header("location:/login.php?error=error1");
 		exit();
 	}
 
@@ -83,13 +83,14 @@ function loginuser($conn,$email,$pwd) {
 	$checkpwd = password_verify($pwd, $pwdhashed);
 
 	if ($checkpwd === false) {
-		header("location:/login.php?error=wronglogin");
+		header("location:/login.php?error=error2");
 		exit();
 	}
 	else if ($checkpwd === true) {
 		session_start();
 		$_SESSION["useremail"] = $emailexists["usersemail"];
 		$_SESSION["userid"] = $emailexists["usersid"];
+		$_SESSION["role"] = $emailexists["accesslevel"];
 		header("location:/home.php");
 		exit();
 	}

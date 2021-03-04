@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Employees, Jobtitles, BusinessUnits, Customers, Deployment, notes, companyinfo, users CASCADE;
+DROP TABLE IF EXISTS Employees, Jobtitles, BusinessUnits, Customers, Deployment, companyinfo, users CASCADE;
 
 CREATE TABLE Jobtitles (
 JobID SERIAL,
@@ -57,13 +57,6 @@ EmployeeID INT,
 		REFERENCES Employees(EmployeeID)
 );
 
-CREATE TABLE notes (
-NoteID SERIAL,
-NoteName VARCHAR(255),
-Note TEXT,
-	PRIMARY KEY(NoteID)
-);
-
 CREATE TABLE companyinfo (
 companyname VARCHAR(255),
 street VARCHAR(255),
@@ -73,9 +66,19 @@ city VARCHAR(255)
 
 CREATE TABLE users (
     usersid INT NOT NULL,
-    usersname VARCHAR(128) NOT NULL,
     usersemail VARCHAR(50) NOT NULL UNIQUE,
-    usersuid VARCHAR(128) NOT NULL,
     userspwd VARCHAR(255) NOT NULL,
-    	PRIMARY KEY (usersid)
+    	PRIMARY KEY (usersid),
+		CONSTRAINT  fk_user
+			FOREIGN KEY (usersid)
+			REFERENCES Employees(EmployeeID)
+);
+
+CREATE TABLE jobxrole (
+	jobid INT,
+	accesslevel VARCHAR(50),
+		PRIMARY KEY (jobid,accesslevel),
+		CONSTRAINT fk_role
+			FOREIGN KEY (jobid)
+			REFERENCES Jobtitles(jobid)
 );

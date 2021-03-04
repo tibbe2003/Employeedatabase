@@ -5,6 +5,7 @@ if(empty($_SESSION['useremail'])) {
    die("Redirecting to login.php");
 }
 $username = $_SESSION['useremail'];
+$role = $_SESSION["role"];
 
 //clean input data function
 require_once ('datavalidation.php');
@@ -16,7 +17,7 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 //gettig userid to receive name from db
 $id = $_SESSION['userid'];
 //getting name from db
-$userdata = pg_query_params($dbconn,"SELECT usersname FROM users WHERE usersid = $1",array(intval($id)));
+$userdata = pg_query_params($dbconn,"SELECT firstname, lastname FROM employees WHERE employeeid = $1",array(intval($id)));
 $userresult = pg_fetch_array($userdata);
 
  //empting variables
@@ -83,7 +84,7 @@ $result = pg_query($dbconn, $query);
   <ul class="nav">
       <li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
       <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
-      <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li>
+      <?php if($role == "admin") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
       <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
       <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
       <li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
@@ -98,7 +99,7 @@ $result = pg_query($dbconn, $query);
         <hr>
         </div>
 
-    <h1>Hello <?php echo $userresult['usersname']; ?></h1>
+    <h1>Hello <?php echo $userresult['firstname'] . " " . $userresult['lastname']; ?></h1>
     <!--number of employees-->
     <div class="insight left">
       <h1 class="title">Number of employees</h1>

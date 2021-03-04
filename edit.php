@@ -15,7 +15,6 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 
 //get the employeeid to make changes
 if(isset($_GET['employeeid'])) {$id = $_GET['employeeid'];}
-
 $_SESSION["employeeid"] = $id;
 
 if(isset($_POST['cancel'])) {header("location:employees.php");}
@@ -142,6 +141,8 @@ if(isset($_POST['update']))
         <input type="submit" name="update" value="Save" class="button">
         <input type="submit" name="cancel" value="Cancel" class="button">
     </form>
+    <?php $_SESSION['employeeemail'] = $data['email']?>
+    <a href='includes/addaccount.inc.php?employeeid=<?php echo $data['employeeid']?>'>Make account</a>
     </div>
 
     <div class="leftdiv">
@@ -215,20 +216,6 @@ if(isset($_POST['update']))
 </html>
 
 <script>
-var coll = document.getElementsByClassName("collapsible");
-var i;
-
-for (i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.maxHeight){
-      content.style.maxHeight = null;
-    } else {
-      content.style.maxHeight = content.scrollHeight + "px";
-    } 
-  });
-}
 
 // Get the modal
 var modal = document.getElementById("assignemployee");
