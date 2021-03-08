@@ -27,6 +27,7 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 
    //nieuwe gegevens in db zetten
    $edit = pg_query_params($dbconn, "UPDATE employees SET email=$1, phone=$2, adress=$3, city=$4 WHERE employeeid = $5",array($email,$phone,$adress,$city,intval($id)));
+   $editmail = pg_query_params($dbconn, "UPDATE users SET usersemail=$1 WHERE usersid=$2", array($email,intval($id)));
 
    if ($edit) {
      pg_close($dbconn);
@@ -72,7 +73,7 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
   <ul class="nav">
       <li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
       <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
-      <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li>
+      <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
       <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
       <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
       <li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
@@ -140,7 +141,7 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
         <h3 id="accountsettings">Account settings</h3>
         <form method="POST" class="form" action="settings.php">
         	<label for="lastname">full name</label>
-        	<input type="text" name="name" class="settings" placeholder="full name" value="<?php echo $userresult['firstname']. " " . $userresult['lastname'] ?>"><br>
+        	<input type="text" name="name" class="settings" placeholder="full name" value="<?php echo $userresult['firstname']. " " . $userresult['lastname'] ?>" disabled><br>
         	<label for="email">Email</label>
         	<input type="text" name="email" class="settings" placeholder="Email" value="<?php echo $userresult['email'] ?>">
         	<label for="phone">Phone</label>

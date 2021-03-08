@@ -30,12 +30,16 @@ $userresult = pg_fetch_array($userdata);
  //preparing ceo query
  $ceo = pg_query("SELECT firstname, lastname FROM employees WHERE jobid=1");
  $ceoresult = pg_fetch_assoc($ceo);
-?>
-<?php
+
 $query = "SELECT businessunits.businessunit, COUNT(*) as number FROM employees
           JOIN BusinessUnits ON Employees.UnitID=BusinessUnits.UnitID
           GROUP BY businessunit";
 $result = pg_query($dbconn, $query);
+
+//businessunit krijgen van ingelogde manager
+if($role == "manager") {
+$managerunit = pg_query_params($dbconn, "SELECT UnitID FROM employees WHERE employeeid = $1",array(intval($id)));
+}
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +88,7 @@ $result = pg_query($dbconn, $query);
   <ul class="nav">
       <li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
       <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
-      <?php if($role == "admin") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
+      <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
       <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
       <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
       <li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
@@ -100,7 +104,9 @@ $result = pg_query($dbconn, $query);
         </div>
 
     <h1>Hello <?php echo $userresult['firstname'] . " " . $userresult['lastname']; ?></h1>
+
     <!--number of employees-->
+    <?php if($role == "admin") { ?>
     <div class="insight left">
       <h1 class="title">Number of employees</h1>
       <?php
@@ -112,19 +118,35 @@ $result = pg_query($dbconn, $query);
       ?>
       <h1 class="employeeamount"><?php echo $resultamount['numberofemployees']; ?></h1>
     </div>
+    <?php } else if ($role == "manager") {?>
+    <div class="insight left">
+      <h1 class="title">Number of employees in your unit</h1>
+      <?php
+        $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
+            or die('Could not connect: ' . pg_last_error());
 
-    <!--number of employees per business unit (graph)-->
+        $amount = pg_query($dbconn,'SELECT COUNT(employeeid) AS numberofemployees FROM employees WHERE UnitID = $managerunit');
+        $resultamount = pg_fetch_array($amount);
+      ?>
+      <h1 class="employeeamount"><?php echo $resultamount['numberofemployees']; ?></h1>
+    </div>
+    <?php } ?>
+
+    <!--stock-->
     <div class="insight right">
       <iframe frameBorder='0' class="stock" scrolling='no' src='https://api.stockdio.com/visualization/financial/charts/v1/HistoricalPrices?app-key=2AEA891CB1874DFBB32238D7A954FDD2&indicators=macd(26,12,9);&stockExchange=AEX&symbol=ict&dividends=true&splits=true&palette=Financial-Light&showLogo=No&borderColor=f0f0f0&backgroundColor=f0f0f0&captionColor=fead68&titleColor=ffffff'></iframe>
     </div>
 
-    <!--number of customers-->
+    <!--employees-->
+    <?php if($role == "admin" || $role == "manager") {?>
     <div class="insight left">
       <h1 class="title">Employees per Businessunit</h1>
       <div id="chart" style="width:100%;height:78%;"></div>
     </div>
+    <?php } ?>
 
-    <!--Number of jobs done-->
+
+    <!--birthdays-->
     <div class="insight right">
       <h1 class="title">Birthdays of today</h1>
       <?php

@@ -4,6 +4,10 @@ if(empty($_SESSION['useremail'])) {
    header("Location: login.php");
    die("Redirecting to login.php");
 }
+//role in variabelen zetten
+$role = $_SESSION['role'];
+
+if($_SESSION['role'] == "employee") {header("location: home.php?error=91");}
 $username = $_SESSION['useremail'];
 //clean input data function
 require_once ('datavalidation.php');

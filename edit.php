@@ -5,6 +5,7 @@ if(empty($_SESSION['useremail'])) {
    die("Redirecting to login.php"); 
 } 
 $username = $_SESSION['useremail'];
+$role = $_SESSION['role'];
 //clean input data function
 require_once('datavalidation.php');
 //connecting to database
@@ -91,7 +92,7 @@ if(isset($_POST['update']))
   <ul class="nav">
       <li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
       <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
-      <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li>
+      <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
       <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
       <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
       <li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
