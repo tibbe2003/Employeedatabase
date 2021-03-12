@@ -37,9 +37,10 @@ $query = "SELECT businessunits.businessunit, COUNT(*) as number FROM employees
 $result = pg_query($dbconn, $query);
 
 //businessunit krijgen van ingelogde manager
-if($role == "manager") {
-$managerunit = pg_query_params($dbconn, "SELECT UnitID FROM employees WHERE employeeid = $1",array(intval($id)));
-}
+$managerunit = pg_query_params($dbconn, "SELECT UnitID AS aantal FROM employees WHERE employeeid = $1",array(intval($id)));
+$unitamaount = pg_fetch_array($managerunit);
+$unitamount = $unitamaount['aantal'];
+$_SESSION['unitid'] = $unitamount;
 ?>
 
 <!DOCTYPE html>
@@ -89,19 +90,21 @@ $managerunit = pg_query_params($dbconn, "SELECT UnitID FROM employees WHERE empl
       <li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
       <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
-      <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
-      <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
+  		<?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li> <?php } ?>
+      <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li> <?php } ?>
+      <li class="navitem"><a href="chat.php"><img src="img/icons8-chat-100.png" alt="chat"></a></li>
       <li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
   </ul>
     <!--mainpage-->
     <div style="margin-left:100px;padding:1px 16px;height:100%;">
       <!--search employee-->
+      <?php if($role != "employee") { ?>
       <div class="searchform">
          <form method="post" action="searchresult.php" class="search">
               <input type="text" name="search" placeholder="Search employee" required class="S">
           </form>
         <hr>
-        </div>
+      </div> <?php } ?>
 
     <h1>Hello <?php echo $userresult['firstname'] . " " . $userresult['lastname']; ?></h1>
 
@@ -120,12 +123,12 @@ $managerunit = pg_query_params($dbconn, "SELECT UnitID FROM employees WHERE empl
     </div>
     <?php } else if ($role == "manager") {?>
     <div class="insight left">
-      <h1 class="title">Number of employees in your unit</h1>
+      <h1 class="title">Number of employees<br>in your unit</h1>
       <?php
         $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
             or die('Could not connect: ' . pg_last_error());
 
-        $amount = pg_query($dbconn,'SELECT COUNT(employeeid) AS numberofemployees FROM employees WHERE UnitID = $managerunit');
+        $amount = pg_query_params($dbconn,'SELECT COUNT(employeeid) AS numberofemployees FROM employees WHERE UnitID = $1',array(intval($unitamount)));
         $resultamount = pg_fetch_array($amount);
       ?>
       <h1 class="employeeamount"><?php echo $resultamount['numberofemployees']; ?></h1>

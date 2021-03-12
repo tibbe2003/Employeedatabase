@@ -6,6 +6,8 @@ if(empty($_SESSION['useremail'])) {
 }
 $username = $_SESSION['useremail'];
 $role = $_SESSION['role'];
+
+if($_SESSION['role'] == "employee") {header("location: home.php?error=91");}
 //clean input data function
 require_once ('datavalidation.php');
 //empting variables
@@ -36,8 +38,9 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
       <li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
       <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
-      <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
-      <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
+  		<?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li> <?php } ?>
+      <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li> <?php } ?>
+      <li class="navitem"><a href="chat.php"><img src="img/icons8-chat-100.png" alt="chat"></a></li>
       <li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
   </ul>
     <!--mainpage-->
@@ -50,7 +53,8 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
         <hr>
         </div>
     <!--datainput popup 1-->
-    <button data-modal-target="#modal" class="addbutton">Add businessunit</button>
+    <?php if($role == "admin") { ?>
+    <button data-modal-target="#modal" class="addbutton">Add businessunit</button> <?php } ?>
       <div class="modal" id="modal">
         <div class="modal-header">
             <div class="title">Add new businessunit</div>

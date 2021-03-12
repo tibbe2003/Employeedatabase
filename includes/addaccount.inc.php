@@ -12,13 +12,13 @@ $email = $_SESSION['employeeemail'];
 $pwd = "Welkom01";
 
 //jobid ophalen voor volgende query
-$jobidqry = pg_query_params($conn,"SELECT jobid FROM employees WHERE employeeid = $1",array($id));
+$jobidqry = pg_query_params($conn,"SELECT jobid FROM employees WHERE employeeid = $1",array(intval($id)));
 $jobiddata = pg_fetch_array($jobidqry);
 $jobid = $jobiddata['jobid'];
 
  $roleqry = pg_query_params($conn,"SELECT employees.employeeid, jobxrole.accesslevel
                         FROM employees, jobxrole, jobtitles
-                        WHERE employeeid = $1 AND jobxrole.jobid = $2 AND jobtitles.jobid = $2",array($id,$jobid));
+                        WHERE employeeid = $1 AND jobxrole.jobid = $2 AND jobtitles.jobid = $2",array(intval($id),intval($jobid)));
 $roledata = pg_fetch_array($roleqry);
 $role = $roledata['accesslevel'];
 

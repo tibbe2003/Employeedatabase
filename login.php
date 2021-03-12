@@ -36,7 +36,6 @@
     <input type="password" placeholder="Enter Password" name="pwd">
 
     <button type="submit" name="submit" class="btn">Login</button>
-		<button type="button" name="button" class="btn" onclick="window.location.href='signup.php'" style="margin-top: 4%;">No account yet? signup!</button>
 
   </form>
 

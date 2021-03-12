@@ -168,10 +168,10 @@ hr {
   padding: 10px 22px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
   font-size: 12px;
   margin: 4px 2px;
   cursor: pointer;
+  z-index: 5;
 }
 
 .datainput {
@@ -206,9 +206,10 @@ tr:nth-child(even){background-color: #f2f2f2}
 }
 
 .alert {
-  padding: 20px;
+  padding: 10px;
   background-color: green;
   color: white;
+  width: 80%;
 }
 
 .closebtn {

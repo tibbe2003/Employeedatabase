@@ -1,4 +1,5 @@
 <?php
+require_once("includes/dbh.inc.php");
  session_start();
 if(empty($_SESSION['useremail'])) {
    header("Location: login.php");
@@ -6,6 +7,8 @@ if(empty($_SESSION['useremail'])) {
 }
 //role in variabelen zetten
 $role = $_SESSION['role'];
+$id = $_SESSION['userid'];
+$unitamount = $_SESSION['unitid'];
 
 if($_SESSION['role'] == "employee") {header("location: home.php?error=91");}
 $username = $_SESSION['useremail'];
@@ -39,9 +42,10 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 	<ul class="nav">
   		<li class="navitem"><a href="home.php"><img src="img/logo.png" alt="Logo"></a></li>
       <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
-  		<li class="navitem"><a class="active" href="#employees"><img src="img/employee.png"></a></li>
-  		<li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li>
-  		<li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li>
+      <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
+  		<?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li> <?php } ?>
+      <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li> <?php } ?>
+	  <li class="navitem"><a href="chat.php"><img src="img/icons8-chat-100.png" alt="chat"></a></li>
   		<li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
 	</ul>
 		<!--mainpage-->
@@ -148,13 +152,18 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
           $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
             or die('Could not connect: ' . pg_last_error());
           //constructing query to select all employee data
-          $query = 'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City, Jobtitles.Jobtitles, BusinessUnits.BusinessUnit, Employees.Joindate, Employees.Salary
+		  if ($role == "admin") {
+          $result = pg_query($dbconn, 'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City, Jobtitles.Jobtitles, BusinessUnits.BusinessUnit, Employees.Joindate, Employees.Salary
             FROM employees
             JOIN Jobtitles ON Employees.JobID=Jobtitles.JobID
             JOIN BusinessUnits ON Employees.UnitID=BusinessUnits.UnitID
-            ORDER BY employeeid';
-          //preparing to show the result
-          $result = pg_query($query) or die('Query failed: ' . pg_last_error()); //alles ophalen uit database
+            ORDER BY employeeid'); } else if ($role == "manager") {
+				$result = pg_query_params($dbconn, 'SELECT Employees.EmployeeID, Employees.FirstName, Employees.LastName, Employees.Email, Employees.Phone, Employees.BirthDate, Employees.Adress, Employees.City, Jobtitles.Jobtitles, BusinessUnits.BusinessUnit, Employees.Joindate, Employees.Salary
+				FROM employees
+				JOIN Jobtitles ON Employees.JobID=Jobtitles.JobID
+				JOIN BusinessUnits ON Employees.UnitID=BusinessUnits.UnitID
+				WHERE employees.UnitID = $1',array(intval($unitamount)));
+			}
           //showing result in table
             echo "<table>\n";
             echo

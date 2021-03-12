@@ -91,6 +91,8 @@ function loginuser($conn,$email,$pwd) {
 		$_SESSION["useremail"] = $emailexists["usersemail"];
 		$_SESSION["userid"] = $emailexists["usersid"];
 		$_SESSION["role"] = $emailexists["accesslevel"];
+
+		$useridtologindetails = pg_query_params($conn, "INSERT INTO login_details (user_id) VALUES ($1)",array(intval($emailexists["usersid"])));
 		header("location:/home.php");
 		exit();
 	}

@@ -82,3 +82,22 @@ CREATE TABLE jobxrole (
 			FOREIGN KEY (jobid)
 			REFERENCES Jobtitles(jobid)
 );
+
+CREATE TYPE istyping AS ENUM ('no', 'yes');
+CREATE TABLE chat_message (
+  chat_message_id SERIAL,
+  to_user_id int NOT NULL,
+  from_user_id int NOT NULL,
+  chat_message text NOT NULL,
+  "timestamp" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  status int NOT NULL,
+	PRIMARY KEY (chat_message_id)
+);
+
+CREATE TABLE login_details (
+	login_details_id SERIAL,
+	user_id int NOT NULL,
+	last_activity timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	is_type istyping NOT NULL,
+		PRIMARY KEY(login_details_id)
+);
