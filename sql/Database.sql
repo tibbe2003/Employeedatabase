@@ -94,10 +94,13 @@ CREATE TABLE chat_message (
 	PRIMARY KEY (chat_message_id)
 );
 
-CREATE TABLE login_details (
-	login_details_id SERIAL,
-	user_id int NOT NULL,
-	last_activity timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	is_type istyping NOT NULL,
-		PRIMARY KEY(login_details_id)
+CREATE TABLE calender (
+id serial,
+userid int NOT NULL,
+title varchar(255) NOT NULL,
+date date NOT NULL,
+created timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+modified timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
+status int NOT NULL DEFAULT 1,
+	PRIMARY KEY(id)
 );

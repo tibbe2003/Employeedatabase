@@ -1,4 +1,5 @@
 <?php
+	include_once('dbh.inc.php');
 //input schonen en testen
 function test_input($data) {
   $data = trim($data);
@@ -7,16 +8,13 @@ function test_input($data) {
   return $data;
 }
     //clean input data function
-    require_once ('datavalidation.php');
+    require_once ('includes/datavalidation.inc.php');
     //empting varialbes
     $businessname = $contactname = $email = $website = $adress = NULL;
     $websiteErr ="";
 ?>
 
 <?php
-    //connect to database
-    $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
-        or die('Could not connect: ' . pg_last_error());
 
     //if submit button is pushed, collect data and clean input
     if (isset($_POST['submit'])) {
@@ -47,12 +45,12 @@ function test_input($data) {
         if($adress=="") {$adress=NULL;}
         //input data into database
         $query = pg_query_params(
-            $dbconn,"INSERT  INTO customers(customername,contactname,email,website,adress) VALUES ($1,$2,$3,$4,$5)",array($businessname,$contactname,$email,$website,$adress));
-            header("Location: customers.php");
+            $conn,"INSERT  INTO customers(customername,contactname,email,website,adress) VALUES ($1,$2,$3,$4,$5)",array($businessname,$contactname,$email,$website,$adress));
+            header("Location: /customers.php");
     }
     //if there are name or mail errors
     else {
-            header("Location: customers.php?Error=".$websiteErr);
+            header("Location: /customers.php?Error=".$websiteErr);
     }
     
     exit();

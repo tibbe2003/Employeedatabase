@@ -1,4 +1,5 @@
  <?php
+ 	include_once('includes/dbh.inc.php');
  session_start();
 if(empty($_SESSION['useremail'])) {
    header("Location: login.php");
@@ -10,10 +11,7 @@ $unitid = $_SESSION['unitid'];
 
 if($_SESSION['role'] == "employee") {header("location: home.php?error=91");}
 //clean input data function
-require_once('datavalidation.php');
-//connecting to database
-$dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
- or die('Could not connect: ' . pg_last_error());
+require_once('includes/datavalidation.inc.php');
 //empting varialbes
  $customername = $contactname = $email = $website = $id = $adress = $customerid ="";
 
@@ -35,12 +33,12 @@ if(isset($_POST['update']))
     $customerid = clean_input($_POST['customerid']);
 
     //preparing an update query for given input
-    $edit = pg_query_params($dbconn,"UPDATE customers SET customername=$1, contactname=$2, email=$3, website=$4, adress=$5 where customerid = $6",array($customername,$contactname,$email,$website,$adress,intval($customerid))) or die ('Query failed: ' . pg_last_error()); //nieuwe gegevens in database zetten
+    $edit = pg_query_params($conn,"UPDATE customers SET customername=$1, contactname=$2, email=$3, website=$4, adress=$5 where customerid = $6",array($customername,$contactname,$email,$website,$adress,intval($customerid))) or die ('Query failed: ' . pg_last_error()); //nieuwe gegevens in database zetten
 
 	//if edit is true
     if($edit)
     {
-        pg_close($dbconn); // Close connection
+        pg_close($conn); // Close connection
         header("location:customers.php"); // redirects to all records page
         exit;
     }
@@ -53,7 +51,7 @@ if(isset($_POST['update']))
 //if not clicked on update
 	else {
 	//getting data from database
-    	$qry = pg_query_params($dbconn,'SELECT customerid, customername, contactname, email, website, adress
+    	$qry = pg_query_params($conn,'SELECT customerid, customername, contactname, email, website, adress
         	FROM customers
         	WHERE customerid = $1',array(intval($id)))
     			or die ('Query failed: ' . pg_last_error());
@@ -64,7 +62,7 @@ if(isset($_POST['update']))
 
 <?php
 	//clean input data function
-  	require_once ('datavalidation.php');
+  	require_once ('includes/datavalidation.inc.php');
   	//empting variables
   	$job = $unit =""; $nameErr = $emailErr ="";
   	//validate input
@@ -77,13 +75,16 @@ if(isset($_POST['update']))
 <head>
   <title><?php echo $data['customername']; ?></title>
   	<link href="css/customerview.css?<?php echo time(); ?>" rel="stylesheet">
-  	<script defer src="datainsert.js"></script>
+    <link href='css/navbar.css?<?php echo time(); ?>' rel='stylesheet'></link>
   	<meta charset="UTF-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   	<meta http-equiv="X-UA-Compatible" content="ie=edge">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
   	<link rel="preconnect" href="https://fonts.gstatic.com">
   	<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 
@@ -95,8 +96,12 @@ if(isset($_POST['update']))
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
   		<?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li> <?php } ?>
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li> <?php } ?>
+      <li class="navitem"><a href="cloud.php"><img src="img/icons8-upload-to-cloud-100.png" alt="cloud"></a></li>
+      <li class="navitem"><a href="calender.php"><img src="img/icons8-thursday-100.png" alt="calender"></a></li>
       <li class="navitem"><a href="chat.php"><img src="img/icons8-chat-100.png" alt="chat"></a></li>
   		<li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
+      <li class="navitem bottom"><a href="education.php"><img src="img/icons8-education-100.png" alt="Education"></a></li>
+
 	</ul>
 
 	<div style="margin-left:100px;padding:1px 16px;height:100%;">
@@ -135,7 +140,7 @@ if(isset($_POST['update']))
       <h3>Assigned employees:</h3>
       <div class="assignedto">
         <?php
-          $assigned = pg_query_params($dbconn,'SELECT employees.employeeid, employees.firstname, employees.lastname FROM deployment
+          $assigned = pg_query_params($conn,'SELECT employees.employeeid, employees.firstname, employees.lastname FROM deployment
             JOIN employees ON Employees.EmployeeID=Deployment.EmployeeID
             WHERE customerid = $1',array(intval($id)))
             or die ('query failed' . pg_last_error());
@@ -147,7 +152,7 @@ if(isset($_POST['update']))
                 foreach ($line as $col_value) {
                     echo "\t\t<td>$col_value</td>\n";
                 }
-              echo "<td><a href='deleteassign.php?employeeid=".$line['employeeid']."' class=\"delete\">X</a></td>";
+              echo "<td><a href='includes/deleteassign.inc.php?employeeid=".$line['employeeid']."' class=\"delete\">X</a></td>";
               echo "\t</tr>\n";
 
               }
@@ -155,7 +160,7 @@ if(isset($_POST['update']))
 
           pg_free_result($assigned);
 
-          pg_close($dbconn);
+          pg_close($conn);
         ?>
         <button id="assignbutton" class="newbutton">Assign employee</button>
       </div>
@@ -170,7 +175,7 @@ if(isset($_POST['update']))
   <div class="modal-content">
     <span class="close">&times;</span>
     <h1>Assign employee to <?php echo $data['customername'] ?></h1>
-    <form action="assignemployee.php" method="POST">
+    <form action="includes/assignemployee.inc.php" method="POST">
       <select name="employee" class="datainput">
             <option value="">Select...</option>
               <?php
@@ -204,6 +209,25 @@ if(isset($_POST['update']))
 </html>
 
 <script>
+$(document).ready(function(){
+  
+  setInterval(function(){
+   update_last_activity();
+  }, 5000);
+  
+  function update_last_activity()
+   {
+    $.ajax({
+     url:"includes/update_last_activity.inc.php",
+     success:function()
+     {
+  
+     }
+    })
+   }
+  
+  }); 
+  
 var coll = document.getElementsByClassName("collapsible");
 var i;
 

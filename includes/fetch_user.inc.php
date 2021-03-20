@@ -1,24 +1,39 @@
 <?php
-
+include_once('dbh.inc.php');
+include_once('functions.inc.php');
 session_start();
 
-function fetch_users($conn) {
-$query = pg_query_params($conn, "SELECT firstname,lastname,employeeid FROM employees WHERE employeeid != $1", array($_SESSION['userid']));
-          //showing the units
-          echo "<table>\n";
-          echo "<tr><td class=\"unitname\">Contact name</td></tr>";
-          echo "\t<tr>\t";
-              while ($line = pg_fetch_array($query,NULL, PGSQL_ASSOC)) {
-                echo "\t<tr>\n";
-                    echo "\t\t<td>". $line['firstname']. " " . $line['lastname'] . "</td>\n";
-                    echo "\t\t<td><button type='button' class='button' data-touserid=".$line['employeeid']. " data-tousername=" .$line['firstname']. " " . $line['lastname'].">Start Chat</button></td>";
-                    if($_SESSION["userid"] == $line)
-              echo "\t</tr>\n";
+date_default_timezone_set('Europe/Amsterdam');
 
-              }
-            echo "</table>\n";
+$query = pg_query($conn, "
+SELECT firstname, lastname, employeeid FROM employees 
+WHERE employeeid != '".$_SESSION['userid']."' ORDER BY employeeid");
 
-      pg_free_result($query);
 
-      pg_close($dbconn);
+echo "<table>\n";
+
+while($row = pg_fetch_array($query,NULL, PGSQL_ASSOC))
+{
+ $status = '';
+ $current_timestamp = strtotime(date("Y-m-d H:i:s") . '- 10 second');
+ $current_timestamp = date('Y-m-d H:i:s', $current_timestamp);
+ $user_last_activity = fetch_user_last_activity($row['employeeid'], $conn);
+ 
+ if($user_last_activity > $current_timestamp)
+ {
+  $status = '<span class="label label-success"></span>';
+ }
+ else
+ {
+  $status = '<span class="label label-danger"></span>';
+ }
+
+
+echo "\t<tr>\t";
+      echo "\t<tr>\n";
+          echo "\t\t<td>". $row['firstname']. " " . $row['lastname'] . " " . count_unseen_message($row['employeeid'], $_SESSION['userid'], $conn)."</td>\n";
+          echo "\t\t<td>".$status."</td>";
+          echo "\t\t<td><button type='button' id='startchat' class='button btn start_chat' data-touserid=".$row['employeeid']. " data-tousername=" .$row['firstname']. " " . $row['lastname'].">Chat</button></td>";
+    echo "\t</tr>\n";
 }
+  echo "</table>\n";

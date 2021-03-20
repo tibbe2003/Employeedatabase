@@ -1,4 +1,5 @@
 <?php
+  include_once('includes/dbh.inc.php');
  session_start();
 if(empty($_SESSION['useremail'])) {
    header("Location: login.php");
@@ -9,7 +10,7 @@ $role = $_SESSION['role'];
 
 if($_SESSION['role'] == "employee") {header("location: home.php?error=91");}
 //clean input data function
-require_once ('datavalidation.php');
+require_once ('includes/datavalidation.inc.php');
 //empting variables
 $job = $unit =""; $nameErr = $emailErr ="";
 //validate input
@@ -22,7 +23,8 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 <head>
   <title>Employees</title>
   <link href="css/units.css?<?php echo time(); ?>" rel="stylesheet">
-  <script defer src="datainsert.js"></script>
+  <link href='css/navbar.css?<?php echo time(); ?>' rel='stylesheet'></link>
+  <script defer src="includes/datainsert.inc.js"></script>
   <script defer src="jobtitleinsert.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,8 +42,12 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
   		<?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li> <?php } ?>
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li> <?php } ?>
+      <li class="navitem"><a href="cloud.php"><img src="img/icons8-upload-to-cloud-100.png" alt="cloud"></a></li>
+      <li class="navitem"><a href="calender.php"><img src="img/icons8-thursday-100.png" alt="calender"></a></li>
       <li class="navitem"><a href="chat.php"><img src="img/icons8-chat-100.png" alt="chat"></a></li>
       <li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
+      <li class="navitem bottom"><a href="education.php"><img src="img/icons8-education-100.png" alt="Education"></a></li>
+
   </ul>
     <!--mainpage-->
     <div style="margin-left:100px;padding:1px 16px;height:100%;">
@@ -61,7 +67,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
             <button data-close-button class="close">&times;</button>
         </div>
       <div class="modal-body">
-          <form action="unitinsert.php" method="post">
+          <form action="includes/unitinsert.inc.php" method="post">
           <input type="text" name="unit" placeholder="Add Businessunit" required class="datainput">
           <input type="submit" name="submit">
           </form>
@@ -74,14 +80,10 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
       <div class="units">
         <h2>Businessunits</h2>
         <?php
-          //connecting database
-          $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
-            or die('Could not connect: ' . pg_last_error());
-
           //constructing query to select all employee data
           $query = 'SELECT * FROM BusinessUnits ORDER BY UnitID';
           //showing the units
-          $resultunits = pg_query($dbconn,$query) or die ('Query failed' . pg_last_error());
+          $resultunits = pg_query($conn,$query) or die ('Query failed' . pg_last_error());
           //showing in table
           echo "<table>\n";
           echo "<tr><td class=\"unitname\">Unit name</td></tr>";
@@ -91,7 +93,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
                 foreach ($lineunits as $col_value) {
                     echo "\t\t<td>$col_value</td>\n";
                 }
-              echo "<td><a href='unitdelete.php?unitid=".$lineunits['unitid']."'>Delete</a></td>";
+              echo "<td><a href='unitincludes/delete.inc.php?unitid=".$lineunits['unitid']."'>Delete</a></td>";
               echo "\t</tr>\n";
 
               }
@@ -99,7 +101,7 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 
       pg_free_result($resultunits);
 
-      pg_close($dbconn);
+      pg_close($conn);
         ?>
         <?php
         if (isset($_GET["error"])) {
@@ -115,21 +117,17 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
       <div class="titles">
         <h2>Jobtitles</h2>
         <?php
-          //connecting database
-          $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
-            or die('Could not connect: ' . pg_last_error());
-
           //constructing query to select all employee data
-          $queryjob = 'SELECT * FROM Jobtitles ORDER BY JobID';
+          $jobquery = 'SELECT * FROM jobtitles ORDER BY jobid';
           //showing the units
-          $resultjob = pg_query($dbconn,$queryjob) or die ('Query failed' . pg_last_error());
+          $jobresult = pg_query($conn,$jobquery) or die ('Query failed' . pg_last_error());
           //showing in table
           echo "<table>\n";
-          echo "<tr><td class=\"unitname\">Jobtitles</td></tr>";
+          echo "<tr><td class=\"unitname\">Jobtitle</td></tr>";
           echo "\t<tr>\t";
-              while ($linejob = pg_fetch_array($resultjob,NULL, PGSQL_ASSOC)) {
+              while ($row = pg_fetch_array($jobresult,NULL, PGSQL_ASSOC)) {
                 echo "\t<tr>\n";
-                foreach ($linejob as $col_valuejob) {
+                foreach ($row as $col_valuejob) {
                     echo "\t\t<td>$col_valuejob</td>\n";
                 }
               echo "\t</tr>\n";
@@ -137,9 +135,9 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
               }
             echo "</table>\n";
 
-      pg_free_result($resultjob);
+      pg_free_result($jobresult);
 
-      pg_close($dbconn);
+      pg_close($conn);
         ?>
       </div>
     </div>
@@ -147,3 +145,24 @@ if (isset($_GET['emailErr'])){$emailErr = clean_input($_GET['emailErr']); }
 </div>
 </body>
 </html>
+
+<script>
+$(document).ready(function(){
+  
+setInterval(function(){
+ update_last_activity();
+}, 5000);
+
+function update_last_activity()
+ {
+  $.ajax({
+   url:"includes/update_last_activity.inc.php",
+   success:function()
+   {
+
+   }
+  })
+ }
+
+}); 
+</script>

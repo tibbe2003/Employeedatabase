@@ -1,4 +1,5 @@
 <?php
+	include_once('includes/dbh.inc.php');
  session_start();
 if(empty($_SESSION['useremail'])) {
    header("Location: login.php");
@@ -7,11 +8,8 @@ if(empty($_SESSION['useremail'])) {
 $username = $_SESSION['useremail'];
 $role = $_SESSION["role"];
 //clean input data function
-require_once('datavalidation.php');
+require_once('includes/datavalidation.inc.php');
 
-//Connecting to bd
-$dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
- or die('Could not connect: ' . pg_last_error());
 
  //empting variables
  $qry = $data = "";
@@ -26,22 +24,22 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
    $city = clean_input($_POST['city']);
 
    //nieuwe gegevens in db zetten
-   $edit = pg_query_params($dbconn, "UPDATE employees SET email=$1, phone=$2, adress=$3, city=$4 WHERE employeeid = $5",array($email,$phone,$adress,$city,intval($id)));
-   $editmail = pg_query_params($dbconn, "UPDATE users SET usersemail=$1 WHERE usersid=$2", array($email,intval($id)));
+   $edit = pg_query_params($conn, "UPDATE employees SET email=$1, phone=$2, adress=$3, city=$4 WHERE employeeid = $5",array($email,$phone,$adress,$city,intval($id)));
+   $editmail = pg_query_params($conn, "UPDATE users SET usersemail=$1 WHERE usersid=$2", array($email,intval($id)));
 
    if ($edit) {
-     pg_close($dbconn);
+     pg_close($conn);
      header("location:settings.php?succes=1");
      exit;
    }
    else {
-     pg_close($dbconn);
+     pg_close($conn);
      header("location:settings.php?succes=0");
      exit;
    }
  } //else for if the button is not clicked
  else {
-   $userdata = pg_query_params($dbconn,"SELECT firstname, lastname, email, phone, adress, city FROM employees WHERE employeeid = $1",array(intval($id)));
+   $userdata = pg_query_params($conn,"SELECT firstname, lastname, email, phone, adress, city FROM employees WHERE employeeid = $1",array(intval($id)));
    $userresult = pg_fetch_array($userdata);
  }
 
@@ -59,13 +57,16 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 <head>
   <title>Employees</title>
   <link href='css/settings.css?<?php echo time(); ?>' rel='stylesheet'></link>
-  <script defer src="datainsert.js"></script>
+  <link href='css/navbar.css?<?php echo time(); ?>' rel='stylesheet'></link>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -76,8 +77,12 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
   		<?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li> <?php } ?>
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li> <?php } ?>
+      <li class="navitem"><a href="cloud.php"><img src="img/icons8-upload-to-cloud-100.png" alt="cloud"></a></li>
+      <li class="navitem"><a href="calender.php"><img src="img/icons8-thursday-100.png" alt="calender"></a></li>
       <li class="navitem"><a href="chat.php"><img src="img/icons8-chat-100.png" alt="chat"></a></li>
       <li class="navitem"><a href="settings.php"><img src="img/settings.png" alt="Settings"></a></li>
+      <li class="navitem bottom"><a href="education.php"><img src="img/icons8-education-100.png" alt="Education"></a></li>
+
   </ul>
     <!--mainpage-->
     <div style="margin-left:100px;padding:1px 16px;height:100%;">
@@ -188,3 +193,24 @@ $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebo
 </div>
 </body>
 </html>
+
+<script>
+$(document).ready(function(){
+  
+  setInterval(function(){
+   update_last_activity();
+  }, 5000);
+  
+  function update_last_activity()
+   {
+    $.ajax({
+     url:"includes/update_last_activity.inc.php",
+     success:function()
+     {
+  
+     }
+    })
+   }
+  
+  }); 
+</script>

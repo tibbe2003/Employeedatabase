@@ -1,16 +1,13 @@
 <?php
+	include_once('dbh.inc.php');
     //clean input data function
-    require_once ('datavalidation.php');
+    require_once ('includes/datavalidation.inc.php');
     //empting varialbes
     $fname = $lname = $email = $phone = $birthdate = $adress = $city = $jobtitle = $businessunit = $joindate = $salary=NULL;
     $nameErr = $emailErr = $phoneErr = $adressErr = $cityErr ="";
 ?>
 
 <?php
-    //connect to database
-    $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
-        or die('Could not connect: ' . pg_last_error());
-
     //if submit button is pushed, collect data and clean input
     if (isset($_POST['submit'])) {
         $fname = clean_input($_POST['Fname']); 
@@ -55,12 +52,12 @@
         if($salary=="") {$salary=NULL;}
         //input data into database
         $query = pg_query_params(
-            $dbconn,"INSERT  INTO Employees(FirstName, LastName, Email, Phone, BirthDate, Adress, City, JobID, UnitID, Joindate, Salary) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",array($fname,$lname,$email,$phone,$birthdate,$adress,$city,$jobtitle,$businessunit,$joindate,$salary));
-            header("Location: employees.php");
+            $conn,"INSERT  INTO Employees(FirstName, LastName, Email, Phone, BirthDate, Adress, City, JobID, UnitID, Joindate, Salary) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",array($fname,$lname,$email,$phone,$birthdate,$adress,$city,$jobtitle,$businessunit,$joindate,$salary));
+            header("Location: /employees.php");
     }
     //if there are name or mail errors
     else {
-            header("Location: employees.php?nameErr=".$nameErr."&emailErr=".$emailErr);
+            header("Location: /employees.php?nameErr=".$nameErr."&emailErr=".$emailErr);
     }
     
     exit();

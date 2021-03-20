@@ -2,7 +2,7 @@
 
 if (isset($_POST['submit'])) {
 	
-	$email = $_POST['email'];
+	$email = strtolower($_POST['email']);
 	$pwd = $_POST['pwd'];
 
 	require_once('dbh.inc.php');
