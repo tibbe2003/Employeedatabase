@@ -12,11 +12,11 @@ hr {
   transform: translate(-50%, -50%) scale(0);
   transition: 200ms ease-in-out;
   border: 1px solid black;
-  border-radius: 3px;
+  border-radius: 10px;
   z-index: 10;
   background-color: white;
   width: 500px;
-  max-width: 80%;
+  max-width: 40%;
   overflow: auto;
 }
 

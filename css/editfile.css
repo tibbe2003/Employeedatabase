@@ -1,0 +1,13 @@
+.operations img {
+    height: 15px;
+    width: 15px;
+    display: inline-block;
+}
+
+.operations p {
+    margin-left: 5px;
+    display: inline-block;
+    color: #007FFB;
+    font-weight: bold;
+    vertical-align: center;
+}

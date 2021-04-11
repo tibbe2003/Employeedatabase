@@ -38,6 +38,7 @@ $managerunit = pg_query_params($conn, "SELECT UnitID AS aantal FROM employees WH
 $unitamaount = pg_fetch_array($managerunit);
 $unitamount = $unitamaount['aantal'];
 $_SESSION['unitid'] = $unitamount;
+
 ?>
 
 <!DOCTYPE html>
@@ -90,7 +91,7 @@ $_SESSION['unitid'] = $unitamount;
       <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
   		<?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li> <?php } ?>
-      <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li> <?php } ?>
+      
       <li class="navitem"><a href="cloud.php"><img src="img/icons8-upload-to-cloud-100.png" alt="cloud"></a></li>
       <li class="navitem"><a href="calender.php"><img src="img/icons8-thursday-100.png" alt="calender"></a></li>
       <li class="navitem"><a href="chat.php"><img src="img/icons8-chat-100.png" alt="chat"></a></li>
@@ -144,7 +145,7 @@ $_SESSION['unitid'] = $unitamount;
     <?php if($role == "admin" || $role == "manager") {?>
     <div class="insight left">
       <h1 class="title">Employees per Businessunit</h1>
-      <div id="chart" style="width:100%;height:78%;"></div>
+      <div id="chart" style="width:100%;height:74%;"></div>
     </div>
     <?php } ?>
 
@@ -164,6 +165,103 @@ $_SESSION['unitid'] = $unitamount;
           echo $dataresult['firstname']." ".$dataresult['lastname'];
         }
        ?></h2>
+    </div>
+
+    <!--favorite files-->
+    <div class="insight left">
+      <h1 class="title">Favorite files</h1>
+      <?php
+      $files = pg_query_params($conn,"SELECT * FROM files
+                  WHERE userid = $1 AND favorite = 1",array($_SESSION['userid']));
+      $dataresult = pg_fetch_array($files);
+      ?>
+      <?php if (empty($dataresult)) {
+        echo "<p class='tekst'>You have no favorite file yet! go make some</p><br><a href='cloud.php'>in your personal cloud</a>";
+      } else {?>
+        <table id='filetable'>
+        <tr>
+              <td>File name</td>
+              <td>Date</td>
+              <td></td>
+              <td></td>
+              <td></td>
+        </tr>
+        <?php
+        $qry = pg_query_params($conn, "SELECT * FROM files WHERE userid = $1 AND favorite = 1",array($_SESSION['userid']));
+        while($row = pg_fetch_array($qry,NULL, PGSQL_ASSOC)){
+          $name = $row['name'];
+          $date = $row['date'];
+          $fileid = $row['fileid'];
+        ?>
+          <tr>
+            <td><img src="img/icons8-star-24-2.png" alt="delete" class="star"></td>
+            <td><?php echo $name; ?></td>
+            <td><?php echo $date; ?></td>
+            <td><a href='includes/filedownload.inc.php?fileid=<?php echo $fileid?>'><img src="img/icons8-download-24.png" alt="Download"></a></td>
+            <td><a href='includes/deletefile.inc.php?fileid=<?php echo $fileid?>'><img src="img/icons8-delete-bin-24.png" alt="delete"></a></td>
+          </tr>
+  <?php
+  }
+  ?>
+</table>
+        <?php } ?>
+    </div>
+
+    <!--calender items-->
+    <div class="insight right">
+      <?php
+        $day = date('l');
+        $month = date('F');
+        $daynum = date('d');
+      ?>
+      <h3 class="agenda" style="color:red;"><?php echo $day ?></h3>
+      <h1 class="agenda" style="margin-top:-30px;display:inline-block;"><?php echo $daynum ?></h1>
+      <h3 class="agenda" style="display:inline-block;margin-left:-5x;"><?php echo $month ?></h3>
+      <?php
+      $appointments = pg_query_params($conn, "SELECT * FROM calender WHERE userid = $1 AND date = CURRENT_DATE",array($_SESSION['userid']));
+      $ifappointments = pg_fetch_array($appointments);
+      if(empty($ifappointments)) {
+      echo "<h2>There are no Calender items today!</h2>";
+      } else {  
+        // Fetch events based on the specific date 
+        $userid = $_SESSION['userid'];
+        $result = pg_query_params($conn, "SELECT id, title FROM calender WHERE date = CURRENT_DATE AND status = 1 AND userid = $1",array($userid)); 
+        $qry = pg_query_params($conn, "SELECT COUNT(title) AS amount FROM calender WHERE date = CURRENT_DATE AND status = 1 AND userid = $1",array($userid));
+        $rowcount = pg_fetch_array($qry);
+        if($rowcount['amount'] > 0){ 
+            $eventListHTML .= '<ul class="sidebar__list">'; 
+            $eventListHTML .= '<li class="sidebar__list-item sidebar__list-item--complete">Events</li>'; 
+            while($row = pg_fetch_array($result,NULL, PGSQL_ASSOC)){
+                $num = rand(1, 6);
+                switch ($num)
+                {
+                  case 1:
+                    $color = "green";
+                    break;
+                  case 2:
+                    $color = "red";
+                    break;
+                  case 3:
+                    $color = "orange";
+                    break;
+                  case 4:
+                    $color = "blue";
+                    break;
+                  case 5:
+                    $color = "yellow";
+                    break;
+                  case 6:
+                    $color = "pink";
+                    break;
+                }
+                $eventListHTML .= "<li id='editrow' class='sidebar__list-item listitem'><div class='colortje' style='background-color:".$color.";'></div> ".$row['title']."</li>"; 
+            } 
+            $eventListHTML .= '</ul>'; 
+        } 
+        echo $eventListHTML;
+      }
+      ?>
+      
     </div>
 
     </div>

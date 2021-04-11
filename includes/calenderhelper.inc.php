@@ -2,6 +2,11 @@
 
 include_once('datavalidation.inc.php');
 include_once('dbh.inc.php');
+session_start();
+if(empty($_SESSION['useremail'])) {
+    header("Location: login.php");
+    die("Redirecting to login.php");
+ }
 
 
 $id = $_POST['id'];
@@ -22,16 +27,3 @@ if(isset($_POST['submit'])){
         header("location:/calender.php");
     }
 }
-
-
-
-
-<button data-modal-target="#modal" class="addbutton">Add employee</button>
-  	<div class="modal" id="modal">
-    	<div class="modal-header">
-      		<div class="title">Add new employee</div>
-     				<button data-close-button class="close-button">&times;</button>
-    		</div>
-    	<div class="modal-body">
-    </div>
-  	<div id="overlay"></div>

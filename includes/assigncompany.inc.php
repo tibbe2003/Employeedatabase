@@ -1,5 +1,9 @@
 <?php 
-
+session_start();
+if(empty($_SESSION['useremail'])) {
+	header("Location: login.php");
+	die("Redirecting to login.php");
+ }
 
 $dbconn = pg_connect("host=localhost dbname=thijmen user=thijmen password=Oliebol2003")
     or die('Could not connect: ' . pg_last_error());

@@ -1,7 +1,11 @@
 <?php
-
 require_once('dbh.inc.php');
 require_once('../datavalidation.php');
+session_start();
+if(empty($_SESSION['useremail'])) {
+    header("Location: login.php");
+    die("Redirecting to login.php");
+ }
 
 if (isset($_POST['submit'])) {
 $companyname = clean_input($_POST['companyname']);

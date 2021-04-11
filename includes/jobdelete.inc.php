@@ -1,5 +1,11 @@
 <?php
 	include_once('dbh.inc.php');
+	session_start();
+	if(empty($_SESSION['useremail'])) {
+		header("Location: login.php");
+		die("Redirecting to login.php");
+	 }
+
 	//refering back to previus page
 	$referer = $_SERVER['HTTP_REFERER'];
 	//get id from clicked record

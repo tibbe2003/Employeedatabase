@@ -1,0 +1,281 @@
+* {
+	margin: 0;
+ padding: 0;
+ font-family: Trebuchet MS;
+}
+ 
+.menu {
+ margin: -5px;
+ margin-left: -10px;
+ margin-right:10px;
+ padding: 20px;
+ border: none;
+ text-align: center;
+}
+ 
+.menu ul li {
+ display: inline;
+ padding: 5px;
+}
+ 
+.menu ul li a, a:link, a:visited, a:active {
+ color: #666;
+ text-decoration: none;
+}
+ 
+.menu ul li a:hover {
+ color: #333;
+ text-decoration: none;
+}
+
+.oranet { 
+	margin: 2px;
+	margin-top: 60px;
+	margin-left: -20px;
+	margin-right: 0px;
+	padding: 5px;
+	border: none; 
+
+}
+
+.div1 {
+ margin: 90px;
+ margin-left: -20px;
+ padding: 20px;
+ border: none;
+ text-align: left;  
+ font-family: Arial;
+ font-size: 30px;
+ width: 100%;
+}
+
+.div2 {
+  border: 1px solid #4169E1;
+  border-radius: 100px;
+  background-color:#4169E1;
+  width: 170px;
+  height: 40px;
+  max-width: 80%;
+  overflow: auto;
+  Font-family: Arial;
+  font-size: 17px;
+ }
+
+.div3{
+	text-align: center;
+	font-size: 30px;
+}
+
+.div4 { 
+  text-align:center;
+  font-size: 15px;
+}
+
+ 
+.div6 {
+	margin-left: 200px;
+	margin-top: 10px;
+	padding: 20px;
+	border: 1px solid #e3e3e3;
+	text-align: center;
+	font-size: 15px;
+	color: #f26c29;
+	Background-color: white;
+	width:200px;
+	height:265px;
+	overflow:auto;
+	float: left;
+}
+
+.div7 {
+	margin-left: 525px;
+	margin-top: 5px;
+	padding: 20px;
+	border: 1px solid #e3e3e3;
+	text-align: center;
+	font-size: 15px;
+	color: #f26c29;
+	Background-color: white;
+	width:200px;
+	height:265px;
+	overflow:auto;
+	float: center; 
+}
+
+.div8 {
+	margin-right: 200px;
+	margin-top: -300px;
+	padding: 20px;
+	border: 1px solid #e3e3e3;
+	text-align: center;
+	font-size: 15px;
+	color: #f26c29;
+	Background-color: white;
+	width:200px;
+	height:265px;
+	overflow:auto;
+	float: right; 
+}
+
+.space{ 
+background-color: white;
+margin: 10px;
+margin-bottom: 60px;
+padding: 10px;
+font-size: 100px; 
+}
+
+
+.div11{
+	margin-left: 100px;
+	margin-top: 50px;
+	padding: 20px;
+	border: 1px solid #e3e3e3;
+	text-align: left;
+	font-size: 15px;
+	color: black;
+	Background-color: white;
+	width:400px;
+	height:265px;
+	overflow:auto;
+	float: left; 
+}
+
+.div12 {
+	margin-right: 100px;
+	margin-top: 50px;
+	padding: 20px;
+	border: 1px solid #e3e3e3;
+	text-align: left;
+	font-size: 15px;
+	color: black;
+	Background-color: white;
+	width:400px;
+	height:265px;
+	overflow:auto;
+	float: right; 
+} 
+
+.div13{
+	margin-right: 100px;
+	margin-top: 50px;
+	padding: 20px;
+	border: none;
+	text-align: left;
+	font-size: 15px;
+	color: black;
+	Background-color: white;
+	width:400px;
+	height:265px;
+	overflow:auto;
+	float: right; 
+}
+
+.div15{
+	text-align:center;
+	font-size: 20px;
+}
+
+.div16{
+	margin-right: 200px; 
+	margin-top: 50px;
+	padding: 20px;
+	border: none;
+	width:300px;
+	height:265px;
+	overflow:auto;
+	float: right;
+} 
+
+.div17 { 
+	margin-left: 200px; 
+	margin-top: 35px;
+	padding: 20px;
+	border: none;
+	width:300px;
+	height:265px;
+	overflow:auto;
+	float: left;
+}
+
+.div19{ 
+  text-align:center;
+  font-size: 15px;
+} 
+
+.div20{
+margin: 10px;
+margin-left: -20px;
+padding: 20px;
+width: 100%;
+height: 200px;
+ font-family: Arial;
+ font-size: 30px;
+color: white;
+text-align: left;
+margin-bottom: 10px;
+margin-top: 10px;
+}
+
+.div21{
+margin: 10px;
+margin-left: -20px;
+padding: 20px;
+border: none;
+background-color: white;
+width: 100%;
+height: 150px;
+font-size: 40px;
+color: black;
+text-align: left;
+margin-bottom: 10px;
+margin-top: 10px;
+overflow: auto;
+}
+
+.div22 {
+	margin: 10px;
+	padding: 20px;
+	height: 100px; 
+	border: none; 
+	width: 80%;
+}
+
+.div23{
+	margin: 10px;
+	padding: 20px;
+	height: 70px;
+	text-align: center;
+}
+
+.div24{
+	margin-right: 400px;
+	margin-top: -10px;
+	border: none;
+	width:200px;
+	height:50px;
+	float: right;
+}
+
+.div25{
+	Background:linear-gradient(#007FFB,#FA8072,#f26c29);
+	 margin: 0px;
+ margin-left: -20px;
+ margin-top: 0px;
+ padding: 20px;
+ border: none;
+ text-align: left;  
+ width: 100%;
+}
+
+.div26{
+	Background:linear-gradient(#007FFB,#FA8072,#f26c29);
+margin: 0px;
+ margin-left: -20px;
+ margin-top: 0px;
+ padding: 20px;
+ border: none;
+ text-align: left;  
+ width: 100%;
+ overflow: auto;
+}

@@ -31,7 +31,7 @@ $role = $_SESSION["role"];
       <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
   		<?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li> <?php } ?>
-      <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li> <?php } ?>
+      
       <li class="navitem"><a href="cloud.php"><img src="img/icons8-upload-to-cloud-100.png" alt="cloud"></a></li>
       <li class="navitem"><a href="calender.php"><img src="img/icons8-thursday-100.png" alt="calender"></a></li>
       <li class="navitem"><a href="chat.php"><img src="img/icons8-chat-100.png" alt="chat"></a></li>
@@ -76,13 +76,7 @@ $role = $_SESSION["role"];
         <p><b>De kandidaat kan in een toepassing data uit verschillende databases 
         (databronnen) met elkaar in verband brengen.</b>
         <br>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-        Integer ornare sem elit, vel ullamcorper justo tristique sed. 
-        Etiam a urna eros. Quisque tempor sapien ultrices, auctor eros 
-        condimentum, suscipit ante. Lorem ipsum dolor sit amet, consectetur
-        adipiscing elit. Phasellus turpis arcu, ultrices quis libero vulputate, 
-        feugiat maximus urna. Morbi sodales urna lectus, ut mattis lorem viverra eget. 
-        Duis non eleifend urna.</P>
+        Op mijn home pagina heb ik een aandelen grafiek staan. Deze grafiek is via een API van Stockdio gegenereed en komt uit een database van hun. Dit is dus een externe database ik deze heb ik gekoppeld aan mijn eigen informatie.</P>
 
         <h1>Analyse/ Ontwerp</h1>
         <p><b>De kandidaat kan de relatie tussen ontwerpkeuzes van een interactief digitaal 

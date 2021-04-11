@@ -1,0 +1,31 @@
+.operators a {
+    text-decoration: none;
+    color: #007FFB;
+    float: right;
+}
+
+.operators p {
+    display: inline-block;
+}
+
+.operators img {
+    display: inline-block;
+    height: 14px;
+    width: 14px;
+}
+
+.save {
+    float: right;
+}
+
+.btn {
+    background-color: #577CFB;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 10%;
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
+}

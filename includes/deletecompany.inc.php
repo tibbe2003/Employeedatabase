@@ -1,6 +1,10 @@
 <?php 
 	include_once('dbh.inc.php');
 	session_start();
+	if(empty($_SESSION['useremail'])) {
+		header("Location: login.php");
+		die("Redirecting to login.php");
+	 }
 	//get id from clicked record
  	$customerid = $_GET['customerid'];
 	$id = $_POST['employeeid'];

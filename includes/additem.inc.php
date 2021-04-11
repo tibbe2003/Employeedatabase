@@ -2,8 +2,11 @@
 
 include_once("dbh.inc.php");
 include_once("datavalidation.inc.php");
-
 session_start();
+if(empty($_SESSION['useremail'])) {
+    header("Location: login.php");
+    die("Redirecting to login.php");
+ }
 $username = $_SESSION['useremail'];
 $role = $_SESSION["role"];
 $userid = $_SESSION['userid'];

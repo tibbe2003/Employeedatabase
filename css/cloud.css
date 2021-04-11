@@ -1,0 +1,222 @@
+.file::-webkit-file-upload-button {
+    background-color: #007FFB;
+    border: none;
+    color: white;
+    padding: 10px 22px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  .file::before {
+    border-color: black;
+  }
+  .file::before {
+    background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+  }
+
+  .upload {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .upload-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  /* The Close Button */
+  .closeupload {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .closeupload:hover,
+  .closeupload:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  #uploadfile{
+    float: right;
+    background-color: #007FFB;
+    border: none;
+    color: white;
+    padding: 10px 22px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  .uploadfile {
+    background-color: #007FFB;
+    border: none;
+    color: white;
+    padding: 10px 22px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 12px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 2px solid rgb(233, 233, 233);
+    border-right: 1px solid rgb(233, 233, 233);
+    border-left: 1px solid rgb(233, 233, 233);
+    border-top: 1px solid rgb(233, 233, 233);
+
+  }
+  td:not(.extension) {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid rgb(233, 233, 233);
+    border-right: 1px solid rgb(233, 233, 233);
+    border-left: 1px solid rgb(233, 233, 233);
+  }
+
+  .een {
+    width: 30px;
+    border-bottom: 1px solid rgb(233, 233, 233);
+    border-left: 1px solid rgb(233, 233, 233);
+  }
+
+  .classtwo {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid rgb(233, 233, 233);
+    border-right: 1px solid rgb(233, 233, 233);
+  }
+  
+  tr:hover {background-color:#f5f5f5;}
+
+  table a {
+    text-decoration: none;
+    color: black;
+  }
+
+  th img {
+    float: right;
+    height: 10px;
+    width: 10px;
+  }
+
+  .favorite {
+    padding: 5px;
+    height: 25px;
+    width: 25px;
+  }
+
+  .modify {
+    background-color: #FEAD68;
+    padding: 5px;
+    height: 25px;
+    width: 25px;
+  }
+
+  .filter {
+    cursor: pointer;
+  }
+
+  .read {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .read-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+  
+  /* The Close Button */
+  .readclose {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .readclose:hover,
+  .readclose:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .edit-modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 20%;
+  }
+  
+  /* The Close Button */
+  .editclose {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .editclose:hover,
+  .editclose:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .edit {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+
+  

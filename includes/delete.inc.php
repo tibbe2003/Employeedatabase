@@ -1,6 +1,11 @@
 <?php
 	//connecting to database
 	include_once('dbh.inc.php');
+	session_start();
+	if(empty($_SESSION['useremail'])) {
+		header("Location: login.php");
+		die("Redirecting to login.php");
+	 }
 	//get id from clicked record
 
 	$id = $_GET['employeeid'];

@@ -104,3 +104,15 @@ modified timestamptz NOT NULL DEFAULT CURRENT_TIMESTAMP,
 status int NOT NULL DEFAULT 1,
 	PRIMARY KEY(id)
 );
+
+CREATE TABLE files (
+fileid serial,
+name varchar(255) NOT NULL,
+date timestamp NOT NULL,
+userid int
+);
+
+create table pf (
+userid int not null,
+path varchar(100) not null
+);

@@ -153,82 +153,93 @@ www.thijmenbrand.nl/login.php";
 
 function fetch_user_last_activity($userid,$conn) {
 	date_default_timezone_set('Europe/Amsterdam');
+	//getting last activity
 	$query = pg_query_params($conn, "SELECT lastactivity FROM users WHERE usersid = $1 ORDER BY lastactivity DESC LIMIT 1",array(intval($userid)));
 	$result = pg_fetch_array($query);
-
-	 $stringdate = $result['lastactivity'];
-	 
-	 $date = strtotime($stringdate);
-	 $newdate = date('Y-m-d H:i:s', $date);
-	 return $newdate;
+	$stringdate = $result['lastactivity'];
+	
+	//parsing date format into right date format
+	$date = strtotime($stringdate);
+	$newdate = date('Y-m-d H:i:s', $date);
+	return $newdate;
 }
 
 function fetch_user_chat_history($from_user_id, $to_user_id, $conn)
 {
+	//getting data from chatmessages that where sent by logged in users and for other userid
 	$query = pg_query_params($conn, "SELECT * FROM chat_message
 							WHERE (from_user_id = $1 AND to_user_id = $2)
 							OR (from_user_id = $2 AND to_user_id = $1) ORDER BY timestamp DESC",array(intval($from_user_id), intval($to_user_id)));
-
-	$output = '<ul class="list-unstyled">';
+	$output = '<ul class="list-unstyled" style="margin-left:-40px;">';
 	while($row = pg_fetch_array($query,NULL, PGSQL_ASSOC))
 	{
-	 $user_name = '';
-	 $dynamic_background = '';
-	 $chat_message = '';
-	 if($row["from_user_id"] == $from_user_id)
-	 {
-		$dynamic_background = 'background-color:#FFDDC1;';
-	  if($row["status"] > 1) {
-		$chat_message = '<em>This message has been removed</em>';
-		$user_name = '<b class="text-success">You</b>';
-	  } else {
-		$chat_message = $row['chat_message'];
-		$user_name = '<button type="button" class="remove_chat" id="'.$row['chat_message_id'].'">x</button>&nbsp;<b class="text-success">You</b>';
-	}
-
-
-	 } else {
-		$dynamic_background = 'background-color:#BADDFF;';
-		 if($row["status"] > 1) 
-		 {
-			$chat_message = '<em>This message has been removed</em>';
-		 } else {
-			 $chat_message = $row["chat_message"];
-		 }
-		 $user_name = '<b class="text-danger">'.get_user_name($row['from_user_id'], $conn).'</b>';
-	 }
-	 $output .= '
-	 <li style="border-bottom:1px dotted; list-style-type: none; #ccc;padding-top:8px; padding-left:8px; padding-right:8px;'.$dynamic_background.'">
-	  <p>'.$user_name.' - '.$chat_message.'
-	   <div align="right">
-		- <small><em>'.$row['timestamp'].'</em></small>
-	   </div>
-	  </p>
-	 </li>
-	 ';
+		//defining bacis variable
+		$user_name = '';
+	 	$dynamic_background = '';
+	 	$chat_message = '';
+	 	$float = 'float:left;';
+	 	$margin='margin-left:30px;';
+		//if from user id and logged in user is equal
+	 	if($row["from_user_id"] == $from_user_id)
+	 	{
+		 	$userid = $from_user_id;
+		 	$margin='margin-right:30px;';
+			$float = 'float:right;';
+			$dynamic_background = 'background-color:#FFDDC1;';
+			//if status is 1 (this will be updated from 0 to 1 if message is deleted)
+	  		if($row["status"] > 1) {
+				$chat_message = '<em>This message has been removed</em>';
+				$user_name = '<b class="text-success">You</b>';
+	  		} else {
+				$chat_message = $row['chat_message'];
+				$user_name = '<button type="button" class="remove_chat" id="'.$row['chat_message_id'].'">x</button>&nbsp;<b class="text-success">You</b>';
+			}
+		//if userid and logged in user do not match, it must be the other user who sent it
+		} else {
+			$userid = $to_user_id;
+			$dynamic_background = 'background-color:#BADDFF;';
+			//if status is deleted
+		 	if($row["status"] > 1) 
+		 	{
+				$chat_message = '<em>This message has been removed</em>';
+		 	} else {
+			 	$chat_message = $row["chat_message"];
+		 	}
+		 	$user_name = '<b class="text-danger">'.get_user_name($row['from_user_id'], $conn).'</b>';
+	 	}
+		//selecting path to profile picture	
+		$pf = pg_query_params($conn, "SELECT pf FROM users WHERE usersid = $1",array($userid));
+		$fetch = pg_fetch_array($pf);
+		$pfname = $fetch['pf'];
+		//placing names and messages in listitems. $float is defined right when from userid = logged in user els it will be left
+	 	$output .= '
+	 	<div style="display:table;width:100%;margin-top:10px;"><li style="min-width: 5%;max-width: 80%; list-style-type: none; #ccc; '. $float.'">
+	 		<div style="height:40px;width:40px;'.$float.'">
+	 			<img src="../profilepictures/'.$pfname.'" alt="PF" style="height:100%;width:100%;border-radius:50%;">
+	 		</div>
+	 		<p style="width:100%;'.$margin.'border-radius:10px;padding: 5px 5px 5px 5px;'.$dynamic_background.'">'.$chat_message.'</p>
+			<p style="margin-right:20px;margin-top:-15px;'.$float.'"><small><em>'.$row['timestamp'].'</em></small></p>
+	 	</li></div>
+	 	';
 	}
 	$output .= '</ul>';
+
+	//after chats have loaded we update open message count to 0
+	$query = pg_query_params($conn, "UPDATE chat_message SET status = 0 WHERE to_user_id = $1 AND from_user_id = $2 AND status = 1",array($_SESSION['userid'],$to_user_id));
+
 	return $output;
-}
-
-function get_user_name($user_id, $conn)
-{
-	$query = pg_query_params($conn, "SELECT firstname FROM employees WHERE employeeid = $1",array(intval($user_id)));
-
-	while($row = pg_fetch_array($query,NULL, PGSQL_ASSOC))
-	{
-		return $row['firstname'];
-	}
 }
 
 function count_unseen_message($from_user_id, $to_user_id, $conn)
 {
+	//count every row with status 1 and other matching criteria
 	$query = pg_query_params($conn, "SELECT COUNT(*) AS amount FROM chat_message
 							WHERE from_user_id = $1
 							AND to_user_id = $2
 							AND status = 1",array($from_user_id,$to_user_id));
 	
 	$count = pg_fetch_array($query);
+	//if count > 0 it will display the amount
 	if($count > 0)
 	{
 		return $output = '<span class="messageamount">'.$count['amount'].'</span>';

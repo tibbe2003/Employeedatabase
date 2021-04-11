@@ -1,55 +1,55 @@
 <?php
-	include_once('includes/dbh.inc.php');
- session_start();
-if(empty($_SESSION['useremail'])) {
-   header("Location: login.php");
-   die("Redirecting to login.php");
-}
-$username = $_SESSION['useremail'];
-$role = $_SESSION["role"];
-//clean input data function
-require_once('includes/datavalidation.inc.php');
+  include_once('includes/datavalidation.inc.php');
+  include_once('includes/dbh.inc.php');
+  session_start();
+  if(empty($_SESSION['useremail'])) {
+    header("Location: login.php");
+    die("Redirecting to login.php");
+  }
+  $username = $_SESSION['useremail'];
+  $role = $_SESSION["role"];
+  $qry = $data = "";
 
+  //getting userid form logged in user
+  if (isset($_SESSION['userid'])){$id = $_SESSION['userid'];}
 
- //empting variables
- $qry = $data = "";
+  if (isset($_POST['save'])) {
+    $email = clean_input($_POST['email']);
+    $phone = clean_input($_POST['phone']);
+    $adress = clean_input($_POST['adress']);
+    $city = clean_input($_POST['city']);
 
-//getting userid form logged in user
- if (isset($_SESSION['userid'])){$id = $_SESSION['userid'];}
+    //nieuwe gegevens in db zetten
+    $edit = pg_query_params($conn, "UPDATE employees SET email=$1, phone=$2, adress=$3, city=$4 WHERE employeeid = $5",array($email,$phone,$adress,$city,intval($id)));
+    $editmail = pg_query_params($conn, "UPDATE users SET usersemail=$1 WHERE usersid=$2", array($email,intval($id)));
 
- if (isset($_POST['save'])) {
-   $email = clean_input($_POST['email']);
-   $phone = clean_input($_POST['phone']);
-   $adress = clean_input($_POST['adress']);
-   $city = clean_input($_POST['city']);
+    if ($edit) {
+      pg_close($conn);
+      header("location:settings.php?succes=1");
+      exit;
+    }
+    else {
+      pg_close($conn);
+      header("location:settings.php?succes=0");
+      exit;
+    }
+  } //else for if the button is not clicked
+  else {
+    $userdata = pg_query_params($conn,"SELECT firstname, lastname, email, phone, adress, city FROM employees WHERE employeeid = $1",array(intval($id)));
+    $userresult = pg_fetch_array($userdata);
+  }
 
-   //nieuwe gegevens in db zetten
-   $edit = pg_query_params($conn, "UPDATE employees SET email=$1, phone=$2, adress=$3, city=$4 WHERE employeeid = $5",array($email,$phone,$adress,$city,intval($id)));
-   $editmail = pg_query_params($conn, "UPDATE users SET usersemail=$1 WHERE usersid=$2", array($email,intval($id)));
+  //preparing query
+  $qry = pg_query("SELECT * FROM companyinfo");
+  $data = pg_fetch_assoc($qry);
 
-   if ($edit) {
-     pg_close($conn);
-     header("location:settings.php?succes=1");
-     exit;
-   }
-   else {
-     pg_close($conn);
-     header("location:settings.php?succes=0");
-     exit;
-   }
- } //else for if the button is not clicked
- else {
-   $userdata = pg_query_params($conn,"SELECT firstname, lastname, email, phone, adress, city FROM employees WHERE employeeid = $1",array(intval($id)));
-   $userresult = pg_fetch_array($userdata);
- }
+  //preparing ceo query
+  $ceo = pg_query("SELECT firstname, lastname FROM employees WHERE jobid=1");
+  $ceoresult = pg_fetch_assoc($ceo);
 
- //preparing query
- $qry = pg_query("SELECT * FROM companyinfo");
- $data = pg_fetch_assoc($qry);
-
- //preparing ceo query
- $ceo = pg_query("SELECT firstname, lastname FROM employees WHERE jobid=1");
- $ceoresult = pg_fetch_assoc($ceo);
+  $pf = pg_query_params($conn, "SELECT pf FROM users WHERE usersid = $1",array($_SESSION['userid']));
+  $fetch = pg_fetch_array($pf);
+  $pfname = $fetch['pf'];
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +76,7 @@ require_once('includes/datavalidation.inc.php');
       <li class="navitem"><a href="home.php"><img src="img/home.png" alt="home"></a></li>
       <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="employees.php"><img src="img/employee.png"></a></li> <?php } ?>
   		<?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="customers.php"><img src="img/customer.png" alt="Customers"></a></li> <?php } ?>
-      <?php if($role == "admin" || $role == "manager") {?> <li class="navitem"><a href="units.php"><img src="img/unit.png" alt="Unit"></a></li> <?php } ?>
+      
       <li class="navitem"><a href="cloud.php"><img src="img/icons8-upload-to-cloud-100.png" alt="cloud"></a></li>
       <li class="navitem"><a href="calender.php"><img src="img/icons8-thursday-100.png" alt="calender"></a></li>
       <li class="navitem"><a href="chat.php"><img src="img/icons8-chat-100.png" alt="chat"></a></li>
@@ -95,10 +95,30 @@ require_once('includes/datavalidation.inc.php');
         <hr>
       </div> <?php } ?>
 
+      <?php
+        if (isset($_GET["error"])) {
+          if ($_GET["error"] == "2") {
+            echo "<div class=\"alert\">
+                      <strong>Error!</strong> File can't be larger than 5MB!
+                  </div>";
+          }
+          else if ($_GET["error"] == "3") {
+            echo "<div class=\"altert\">
+                      <strong>Error!</strong> Unknown error!
+                  </div>";
+          }
+          else if ($_GET["error"] == "4") {
+            echo "<div class=\"alert\">
+                      <strong>Error</strong> File must be image (png, jpg or gif)!
+                  </div>";
+          }
+        }
+      ?>
     <div class="innernav"style="overflow-x:auto;width: 100%;">
       <h1 style="margin-right: 10%;">My settings</h1>
       <a href="#companyinfo">Company information</a>
       <a href="#accountsettings">Account settings</a>
+      <p id="pfmodal">Profile picture</p>
       <a href="#security">Security</a>
       <?php
       if (isset($_SESSION["useremail"])) {
@@ -191,10 +211,44 @@ require_once('includes/datavalidation.inc.php');
     </div>
 
 </div>
+
+<div id="modal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <div style="height:80px;width:80px;margin-left:auto;margin-right:auto;">
+      <img src="profilepictures/<?php echo $pfname ?>" alt="Profile picture" class="pf" style="height:100%;width:100%;border-radius:50%;">
+    </div>
+    <form action="includes/profilepicture.inc.php" method="POST" enctype="multipart/form-data">
+      <input type="file" name="file" class="file">
+      <input type="submit" name="submit" value="Edit" class="uploadfile">
+    </form>
+  </div>
+
+</div>
 </body>
 </html>
 
 <script>
+  var modal = document.getElementById("modal");
+var btn = document.getElementById("pfmodal");
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
 $(document).ready(function(){
   
   setInterval(function(){

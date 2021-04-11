@@ -1,4 +1,9 @@
 <?php
+session_start();
+if(empty($_SESSION['useremail'])) {
+  header("Location: login.php");
+  die("Redirecting to login.php");
+}
 
 if (isset($_POST['submit'])) {
 

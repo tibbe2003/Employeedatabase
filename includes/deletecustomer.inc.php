@@ -1,5 +1,6 @@
 <?php
 	include_once('dbh.inc.php');
+	session_start();
 	//refering back to previus page
 	$referer = $_SERVER['HTTP_REFERER'];
 	//connecting to database

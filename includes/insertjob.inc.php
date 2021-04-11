@@ -2,6 +2,10 @@
 	include_once('dbh.inc.php');
 	//clean input data function
 	require_once('includes/datavalidation.inc.php');
+	if(empty($_SESSION['useremail'])) {
+		header("Location: login.php");
+		die("Redirecting to login.php");
+	 }
 	//empting variables
 	$job = $joberr = "";
 

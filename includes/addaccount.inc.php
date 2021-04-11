@@ -2,7 +2,10 @@
 session_start();
 include_once('dbh.inc.php');
 require_once('functions.inc.php');
-
+if(empty($_SESSION['useremail'])) {
+    header("Location: login.php");
+    die("Redirecting to login.php");
+ }
 if (empty($_SESSION["userid"])){
     header("location: /home.php");
 }

@@ -49,14 +49,14 @@
   
   table {
     border-collapse: collapse;
-    border-spacing: 0;
-    width: 100%;
+  width: 100%;
   }
   
   tr, td {
+    padding: 20px;
     text-align: left;
-    padding: 8px;
-    font-size: large;
+    border-bottom: 1px solid #ddd;
+
   }
   
   tr{
@@ -203,12 +203,30 @@
   }
 
   .users{
-      width: 30%;
+      width: 100%;
       background-color: #FFFF;
       margin-left: 5px;
       height: 500px;
       display: inline-block;
       height: 100%;
+  }
+
+  .self{
+    width: 100%;
+    background-color: #f0f0f0f0;
+    border-radius: 10px;
+    height: 200px;
+  }
+
+  .self img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .leftdiv {
+    width:30%;
+    display:inline-block;
   }
 
   .label {
@@ -229,12 +247,13 @@
   .user_dialog {
     width: 100%;
     background-color: #fafafa;
-    margin-top: -10px;
   }
 
   #user_model_details {
-    width: 68%;
+    width: 100%;
     float: right;
+    margin-top: 10px;
+    margin-left: 10px;
   }
 
   .chatmate {
@@ -247,6 +266,13 @@
       width: 100%;
     }
     .users {
+      width: 100%;
+    }
+
+    .self{
+      width: 100%;
+    }
+    .leftdiv {
       width: 100%;
     }
   }
@@ -270,7 +296,7 @@
     bottom: 7;
     width: 5%;
     padding: 10px 0px 10px 0px;
-    background-color: #577CFB;
+    background-color: #007FFB;
     color: white;
     border: none;
     cursor: pointer;
@@ -279,9 +305,34 @@
 
   .messageamount {
     background-color: #FEAD68;
-    padding: 5px 5px;
+    border-radius: 50px;
+    padding: 5px 8px 5px 8px;
     font-size: smaller;
 
   }
-  
-  
+
+  .remove_chat {
+    float: right;
+  }
+
+  .rightdiv {
+    width: 68%;
+    display: inline-block;
+  }
+
+  .right {
+    float: right;
+  }
+
+  @media screen and (max-width: 800px){
+  .rightdiv {
+    width: 100%;
+  }
+  }
+
+  .inline {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+  }
+

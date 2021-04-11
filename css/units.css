@@ -12,11 +12,11 @@ hr {
   transform: translate(-50%, -50%) scale(0);
   transition: 200ms ease-in-out;
   border: 1px solid black;
-  border-radius: 3px;
+  border-radius: 10px;
   z-index: 10;
   background-color: white;
   width: 500px;
-  max-width: 80%;
+  max-width: 40%;
   overflow: auto;
 }
 
@@ -81,7 +81,6 @@ hr {
   padding: 10px 22px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
   font-size: 12px;
   margin: 4px 2px;
   cursor: pointer;
@@ -111,23 +110,17 @@ tr:nth-child(even){background-color: #dedede;}
   overflow-x:auto;
 }
 
-.units, .titles {
-  height: 500px;
-  width: 40%;
+.units{
+  height: 300px;
+  width: 86%;
   background-color: #f0f0f0;
   display: inline-block;
   margin-top: 7%;
   overflow-y:auto;
-
-}
-
-.titles {
-  float: right;
-  margin-right: 50px;
 }
 
 .units {
-  margin-left: 50px;
+  margin-left: 120px;
 }
 
 @media only screen and (max-width: 1000px) {
